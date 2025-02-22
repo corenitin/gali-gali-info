@@ -12,12 +12,22 @@ const { PORT } = process.env || 8000;
 const ORIGIN = process.env.ORIGIN || "http://localhost:1800";
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/gali-gali-info";
 
+const allowedOrigins = [
+  "https://gali-gali-info.vercel.app",
+  "https://gali-gali-info-ui3v.vercel.app"
+];
+
 app.use(cors({
-    origin: ORIGIN,
+    origin: function (origin, callback) {
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true);
+        } else {
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-}))
+}));
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
