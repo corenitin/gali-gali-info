@@ -9,13 +9,9 @@ config();
 
 const app = express();
 const { PORT } = process.env || 8000;
-const ORIGIN = process.env.ORIGIN || "http://localhost:1800";
+const allowedOrigins = process.env.ORIGIN || "http://localhost:1800";
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/gali-gali-info";
 
-const allowedOrigins = [
-  "https://gali-gali-info.vercel.app",
-  "https://gali-gali-info-ui3v.vercel.app"
-];
 
 app.use(cors({
     origin: function (origin, callback) {
