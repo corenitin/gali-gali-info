@@ -1,4 +1,4 @@
-import api from "./api";
+import api from "./api.js";
 import { use, useState } from "react";
 
 function App() {

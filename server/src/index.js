@@ -8,7 +8,7 @@ import {connectDB} from "./db/index.js";
 config();
 
 const app = express();
-const { PORT } = process.env || 3000;
+const { PORT } = process.env || 8000;
 const ORIGIN = process.env.ORIGIN || "http://localhost:1800";
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/gali-gali-info";
 
