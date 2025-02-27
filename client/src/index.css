@@ -1,1 +1,106 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+    --color-base-light: #F8F9FA;
+    --color-base-dark: #111111; 
+    --color-primary: #007BFF;
+    --color-primary-dark: #0064ce;
+    --color-secondary: #FFC107;
+    --color-blue-shadow: #0054AE;
+    --color-dark: #000;
+    --color-light: #fff;
+    --color-footer: #000F1F;
+
+    --breakpoint-xs: 475px;
+}
+
+body {
+    font-family: "Lexend", serif;
+}
+
+/* Global Scrollbar Styling */
+html, body {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) var(--color-base-light);
+}
+
+/* Webkit (Chrome, Edge, Safari) */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+    background: var(--color-base-light); /* Light mode background */
+    border-radius: 10px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+    background: var(--color-primary); /* Primary color */
+    border-radius: 10px;
+    transition: background 0.3s ease;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-dark);
+}
+
+/* Dark Mode */
+.dark {
+    scrollbar-color: var(--color-secondary) var(--color-base-dark);
+}
+
+.dark::-webkit-scrollbar-track {
+    background: var(--color-base-dark);
+}
+
+.dark::-webkit-scrollbar-thumb {
+    background: var(--color-secondary);
+}
+
+.dark::-webkit-scrollbar-thumb:hover {
+    background: var(--color-blue-shadow);
+}
+
+
+.auth-body {
+    @apply min-h-screen w-full flex justify-center items-center 
+}
+
+.container {
+    @apply px-4 py-8 xs:py-4 sm:p-12 my-16 xs:mx-4 bg-light dark:bg-dark border-y xs:border border-primary xs:rounded-2xl xs:shadow-xl shadow-blue-shadow/10;
+}
+
+.head-1 {
+    @apply text-2xl xs:text-3xl sm:text-4xl font-semibold ;
+}
+
+.head-2 {
+    @apply text-lg xs:text-xl font-medium
+}
+
+.head-3 {
+    @apply text-lg xs:text-xl font-medium
+}
+
+.input {
+    @apply border border-secondary/60 px-3 py-2 rounded-md bg-base-light dark:bg-base-light/10 outline-none 
+}
+
+.input:focus {
+    @apply border border-secondary/100
+}
+
+.submit-btn {
+    @apply max-w-fit sm:max-w-80 w-full bg-primary text-light px-4 py-2 rounded-md block mx-auto cursor-pointer hover:bg-primary-dark
+}
+
+.hover-border {
+    @apply cursor-pointer hover:bg-primary/15 hover:dark:bg-primary/15 px-3 py-2 rounded-full border border-transparent hover:border-primary/50 hover:dark:border-primary/50 duration-300 transition-all
+}

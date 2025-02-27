@@ -12,7 +12,6 @@ const { PORT } = process.env || 8000;
 const allowedOrigins = process.env.ORIGIN || "http://localhost:1800";
 const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/gali-gali-info";
 
-
 app.use(cors({
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
@@ -23,7 +22,6 @@ app.use(cors({
     },
     credentials: true,
 }));
-
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
