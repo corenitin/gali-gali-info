@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { TiWeatherSunny } from "react-icons/ti";
 import { IoMdMoon } from "react-icons/io";
+import { useAuth } from "../context/AuthContext";
 
 function DarkModeBtn() {
+  const { user } = useAuth();
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) return savedTheme === "dark";
@@ -27,12 +29,12 @@ function DarkModeBtn() {
       {isDarkMode ? (
         <>
           <TiWeatherSunny size={24} />
-          <span>Light</span>
+          {user && <span>Light</span>}
         </>
       ) : (
         <>
           <IoMdMoon size={22} />
-          <span>Dark</span>
+          {user && <span>Dark</span>}
         </>
       )}
     </button>

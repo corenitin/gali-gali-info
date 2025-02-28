@@ -34,8 +34,21 @@ function Login() {
         password: credentials.password, 
       });
       
+      const email = res.data.data.user.email;
+      const phone = res.data.data.user.phone;
+      const role = res.data.data.user.role;
+      let photo = '', name = '';
+      console.log(role)
+      if (role === "individual") {
+        name = res.data.data.user.fullName;
+        photo = res.data.data.user.profileImage;
+      }
+      if (role === "business") {
+        name = res.data.data.user.organization_name;
+        photo = res.data.data.user.logo;
+      }
       if(res.status === 200) {
-        login({ email: credentials.email, phone: credentials.email,  })
+        login({ email, phone, name, photo })
         navigate("/dashboard");
       } // Redirect on success
     } catch (err) {
