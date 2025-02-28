@@ -29,7 +29,6 @@ const generateAccessAndRefreshTokens = async (userId) => {
 
 const registerUser = asyncHandler(async (req, res) => {
   const { email, phone, password, role, profileDetails } = req.body;
-  console.log(email, phone, password, role, profileDetails);
 
   if (!email || !phone || !password || !role || !profileDetails) {
     throw new ApiError(400, "Please provide all the required fields");
@@ -72,7 +71,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, phone, password } = req.body;
-  console.log(email, phone, password);
 
   if((email && phone) || !password) {
     throw new ApiError(400, "Please provide email or phone and password!");

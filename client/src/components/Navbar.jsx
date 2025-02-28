@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiMenu } from "react-icons/fi"; // Hamburger icon
 import { IoClose } from "react-icons/io5"; // Close icon
 import DarkModeBtn from "./DarkModeBtn";
+import gali_logo from "../assets/gali_logo.jpg";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -35,7 +36,7 @@ function Navbar() {
     <nav className="fixed w-full flex justify-between items-center px-2 lg:px-2 py-1 lg:py-1.5 bg-light dark:bg-dark">
       {/* Left Side: Logo */}
       <div className="flex items-center gap-2">
-        <img src="" alt="" className="bg-secondary rounded-full w-12 h-12" />
+        <img src={gali_logo} alt="" className="bg-secondary rounded-full w-12 h-12" />
         <h1 className="text-primary text-xl font-bold">GaliGaliInfo</h1>
       </div>
 
