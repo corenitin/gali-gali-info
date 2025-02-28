@@ -65,22 +65,9 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Something went wrong while registering!");
   }
 
-  const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
-    newUser._id
-  );
-
-  const user = await User.findById(newUser._id).select(
-    "-password -refreshToken"
-  );
-  if (!user) {
-    throw new ApiError(400, "Something went wrong while registering");
-  }
-
   return res
     .status(200)
-    .cookie("gali_accessToken", accessToken, options)
-    .cookie("gali_refreshToken", refreshToken, options)
-    .json(new ApiResponse(200, user, "User registered successfully"));
+    .json(new ApiResponse(200, newUser, "User registered successfully"));
 });
 
 const loginUser = asyncHandler(async (req, res) => {

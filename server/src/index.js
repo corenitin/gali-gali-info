@@ -4,6 +4,7 @@ import userRouter from "./routes/user.route.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import {connectDB} from "./db/index.js";
+import { ApiError } from "./utils/ApiError.js";
 
 config();
 
@@ -30,6 +31,22 @@ app.use(cookieParser());
 connectDB(MONGO_URI);
 
 app.use("/api/users", userRouter);
+
+app.use((err, req, res, next) => {
+    if (err instanceof ApiError) {
+        return res.status(err.statusCode).json({
+            success: err.success,
+            message: err.message,
+            errors: err.errors,
+        });
+    }
+
+    return res.status(500).json({
+        success: false,
+        message: "Internal Server Error",
+        errors: [],
+    });
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

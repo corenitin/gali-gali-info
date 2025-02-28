@@ -94,7 +94,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .input:focus {
-    @apply border border-secondary/100
+    @apply border border-secondary/100 dark:bg-base-light/5
 }
 
 .submit-btn {

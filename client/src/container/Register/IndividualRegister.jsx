@@ -1,25 +1,106 @@
-import React from "react";
+import React, { useState } from "react";
 import { MdOutlineChangeCircle } from "react-icons/md";
+import { IoPersonCircle } from "react-icons/io5";
 import { useNavigate } from "react-router";
+import api from "../../api";
+import axios from "axios";
 
 function IndividualRegister({ setRoleToggle }) {
-  const inputTypes = [
-    { type: "text", placeholder: "Enter full name" },
-    { type: "email", placeholder: "Enter email" },
-    { type: "number", placeholder: "Enter phone number" },
-    { type: "password", placeholder: "Enter password" },
-    { type: "password", placeholder: "Confirm password" },
-    { type: "text", placeholder: "Enter address" },
-    { type: "text", placeholder: "Enter city" },
-    { type: "text", placeholder: "Enter state" },
-    { type: "text", placeholder: "Enter country" },
-    { type: "number", placeholder: "Enter pincode" },
-  ];
+  const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
 
-  const firstHalf = inputTypes.slice(0, 5);
-  const secondHalf = inputTypes.slice(5);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    
+    address: "",
+    city: "",
+    state: "",
+    country: "",
+    pincode: "",
+    
+  });
+  
+  const [error, setError] = useState("");
+  const [isPending, setIsPending] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+
+  const firstHalf = [
+    "fullName",
+    "email",
+    "phone",
+    "password",
+    "confirmPassword",
+  ];
+  const secondHalf = ["address", "city", "state", "country", "pincode"];
 
   const navigate = useNavigate();
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setImage(file);
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "ml_default"); // Replace with your Cloudinary upload preset
+
+    try {
+      const response = await axios.post(
+        "https://api.cloudinary.com/v1_1/kjpatel/image/upload", // Replace with your Cloudinary cloud name
+        formData
+      );
+      setImageUrl(response.data.secure_url);
+    } catch (error) {
+      console.error("Image upload failed", error);
+      setError("Image upload failed");
+    }
+    setIsUploading(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setIsPending(true);
+
+    if (formData.password !== formData.confirmPassword) {
+      setError("Passwords do not match");
+      setIsPending(false);
+      return;
+    }
+
+    try {
+      await api.post("/users/register", {
+        email: formData.email,
+        phone: formData.phone,
+        password: formData.password,
+        role: "individual",
+        profileDetails: {
+          fullName: formData.fullName,
+          address: formData.address,
+          city: formData.city,
+          state: formData.state,
+          country: formData.country,
+          pincode: formData.pincode,
+          profileImage: imageUrl,
+        },
+      });
+
+      navigate("/login");
+    } catch (error) {
+      console.error("Registration failed", error);
+      setError(error.response?.data?.message || "Registration failed");
+    }
+    setIsPending(false);
+  };
 
   return (
     <div className="max-w-6xl container flex flex-col gap-8">
@@ -34,7 +115,7 @@ function IndividualRegister({ setRoleToggle }) {
               className="cursor-pointer"
               onClick={() => setRoleToggle(true)}
             >
-              <MdOutlineChangeCircle size={28} className="" />
+              <MdOutlineChangeCircle size={28} />
             </button>
           </div>
         </h1>
@@ -49,34 +130,75 @@ function IndividualRegister({ setRoleToggle }) {
         </h2>
       </div>
 
-      {/* Grid Layout */}
-      <div className="grid md:grid-cols-2 gap-6">
-        {/* Left Column */}
-        <ul className="flex flex-col gap-6">
-          {firstHalf.map((item, index) => (
-            <input
-              key={index}
-              type={item.type}
-              placeholder={item.placeholder}
-              className="input"
-            />
-          ))}
-        </ul>
+      {error && (
+        <div className="error-box bg-red-100 text-red-700 p-3 rounded-md">
+          {error}
+        </div>
+      )}
 
-        {/* Right Column */}
-        <ul className="flex flex-col gap-6">
-          {secondHalf.map((item, index) => (
-            <input
-              key={index + 5}
-              type={item.type}
-              placeholder={item.placeholder}
-              className="input"
+      <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
+        <div className="flex flex-col items-center gap-4">
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt="Profile"
+              className="w-32 h-32 rounded-full"
             />
-          ))}
-        </ul>
-      </div>
+          ) : (
+            <IoPersonCircle className="w-40 h-40 rounded-full" />
+          )}
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageUpload}
+            className="submit-btn"
+          />
+          {isUploading && <span>Uploading...</span>}
+        </div>
+        <div className="w-full flex gap-6">
+          <ul className="w-full flex flex-col gap-6">
+            {firstHalf.map((key, index) => (
+              <input
+                key={index}
+                type={
+                  key.includes("password")
+                    ? "password"
+                    : key === "email"
+                    ? "email"
+                    : "text"
+                }
+                name={key}
+                placeholder={
+                  "Enter " + key.replace(/([A-Z])/g, " $1").toLowerCase()
+                }
+                value={formData[key]}
+                onChange={handleChange}
+                className="input"
+              />
+            ))}
+          </ul>
 
-      <button className="submit-btn">Register</button>
+          <ul className="w-full flex flex-col gap-6">
+            {secondHalf.map((key, index) => (
+              <input
+                key={index + 5}
+                type={"text"}
+                name={key}
+                placeholder={
+                  "Enter " + key.replace(/([A-Z])/g, " $1").toLowerCase()
+                }
+                value={formData[key]}
+                onChange={handleChange}
+                className="input"
+              />
+            ))}
+          </ul>
+        </div>
+
+        <button type="submit" className="submit-btn" disabled={isPending}>
+          {isPending ? "Registering..." : "Register"}
+        </button>
+      </form>
     </div>
   );
 }
