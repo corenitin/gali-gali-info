@@ -70,8 +70,8 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, phone, password } = req.body;
-  
-  if((email && phone) || !password) {
+
+  if(!(email && phone) || !password) {
     throw new ApiError(400, "Please provide email or phone and password!");
   }
 
@@ -88,6 +88,7 @@ const loginUser = asyncHandler(async (req, res) => {
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
+
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );

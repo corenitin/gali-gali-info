@@ -31,14 +31,13 @@ function Login() {
       const res = await api.post("/users/login", {
         email: credentials.email,
         phone: credentials.phone, 
-        password: credentials.password, 
+        password: credentials.password,
       });
       
       const email = res.data.data.user.email;
       const phone = res.data.data.user.phone;
       const role = res.data.data.user.role;
       let photo = '', name = '';
-      console.log(role)
       if (role === "individual") {
         name = res.data.data.user.fullName;
         photo = res.data.data.user.profileImage;
@@ -48,7 +47,7 @@ function Login() {
         photo = res.data.data.user.logo;
       }
       if(res.status === 200) {
-        login({ email, phone, name, photo })
+        login({ email, phone, name, photo, role })
         navigate("/dashboard");
       } // Redirect on success
     } catch (err) {

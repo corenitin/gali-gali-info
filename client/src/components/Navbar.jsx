@@ -5,14 +5,14 @@ import DarkModeBtn from "./DarkModeBtn";
 import gali_logo from "../assets/gali_logo.jpg";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router";
+import api from "../api";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const { user } = useAuth();
-  console.log(user)
+  const { user, logout } = useAuth();
 
   // Toggle Profile Dropdown
   const toggleDropdown = () => {
@@ -37,6 +37,16 @@ function Navbar() {
     };
   }, []);
 
+  const handleLogout = async() => {
+    try {
+      const res = await api.post('/users/logout');
+      if(res.status === 200) {
+        logout();
+      } 
+    } catch (error) {
+      console.log('Error while logging out,', error)
+    }
+  }
   return (
     <nav className="fixed w-full flex justify-between items-center px-2 lg:px-2 py-1 lg:py-1.5 bg-light dark:bg-dark">
       {/* Left Side: Logo */}
@@ -83,7 +93,7 @@ function Navbar() {
                   <DarkModeBtn />
                 </li>
                 <div className="w-full h-px bg-dark/15 dark:bg-light/15 my-2"></div>
-                <li className="hover-border cursor-pointer py-1 w-full text-center">
+                <li onClick={handleLogout} className="hover-border cursor-pointer py-1 w-full text-center">
                   Logout
                 </li>
               </ul>
