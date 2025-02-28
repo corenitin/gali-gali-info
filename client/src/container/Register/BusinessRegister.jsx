@@ -113,6 +113,7 @@ function BusinessRegister({ setRoleToggle }) {
         password: formData.password,
         role: "business",
         profileDetails: {
+          
           organization_name: formData.organization_name,
           businessAddress: formData.businessAddress,
           city: formData.city,
