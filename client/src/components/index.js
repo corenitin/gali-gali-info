@@ -1,3 +1,4 @@
+import { AuthProvider } from "../context/AuthContext";
 import DarkModeBtn from "./DarkModeBtn";
 import DashboardNavbar from "./DashboardNavbar";
 import Footer from "./Footer";
@@ -10,4 +11,5 @@ export {
     Navbar,
     Footer,
     DashboardNavbar,
+    AuthProvider,
 }

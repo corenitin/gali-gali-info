@@ -3,6 +3,7 @@ import { RiExchangeLine } from "react-icons/ri";
 import { DarkModeBtn } from "../components";
 import { useNavigate } from "react-router";
 import api from "../api";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [loginMethod, setLoginMethod] = useState("email"); // Default: Email login
@@ -11,6 +12,7 @@ function Login() {
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const navigate = useNavigate();
+  const { login } = useAuth();
 
   const toggleLoginMethod = () => {
     setLoginMethod((prevMethod) => (prevMethod === "email" ? "phone" : "email"));
@@ -32,7 +34,10 @@ function Login() {
         password: credentials.password, 
       });
       
-      if(res.status === 200) navigate("/dashboard"); // Redirect on success
+      if(res.status === 200) {
+        login({ email: credentials.email, phone: credentials.email,  })
+        navigate("/dashboard");
+      } // Redirect on success
     } catch (err) {
       setError(err.message);
     } finally {

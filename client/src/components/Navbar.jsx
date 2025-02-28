@@ -3,11 +3,15 @@ import { FiMenu } from "react-icons/fi"; // Hamburger icon
 import { IoClose } from "react-icons/io5"; // Close icon
 import DarkModeBtn from "./DarkModeBtn";
 import gali_logo from "../assets/gali_logo.jpg";
+import { useAuth } from "../context/AuthContext";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
+
+  const { user } = useAuth();
+  console.log(user)
 
   // Toggle Profile Dropdown
   const toggleDropdown = () => {

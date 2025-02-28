@@ -6,22 +6,25 @@ import App from "./App.jsx";
 
 import { Register, Login, Dashboard, SelfPickUp } from "./pages";
 import DashbaordLayout from "./components/DashbaordLayout.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <Router>
-      <Routes>
-        <Route path="/" element={<App />}>
-          <Route index element={<Navigate to="/dashboard" replace />} />
-          <Route path="dashboard" element={<DashbaordLayout />}>
-            <Route path="" element={<Dashboard />} />
+    <AuthProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<App />}>
+            <Route index element={<Navigate to="/dashboard" replace />} />
+            <Route path="dashboard" element={<DashbaordLayout />}>
+              <Route path="" element={<Dashboard />} />
+            </Route>
+            <Route path="self-pick-up" element={<SelfPickUp />} />
           </Route>
-          <Route path="self-pick-up" element={<SelfPickUp />} />
-        </Route>
 
-        <Route path="/register" element={<Register />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </Router>
+    </AuthProvider>
   </StrictMode>
 );

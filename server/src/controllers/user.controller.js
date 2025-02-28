@@ -38,7 +38,6 @@ const registerUser = asyncHandler(async (req, res) => {
   if (existingUser) {
     throw new ApiError(400, "User with this email or phone already exists");
   }
-
   let newUser;
   if (role === "individual") {
     newUser = await Individual.create({
@@ -71,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, phone, password } = req.body;
-
+  
   if((email && phone) || !password) {
     throw new ApiError(400, "Please provide email or phone and password!");
   }
@@ -81,7 +80,6 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(404, "User doesn't exists with this credential!");
   }
 
-  console.log(user)
   const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) {
     throw new ApiError(404, "Invalid password!");
@@ -106,7 +104,7 @@ const loginUser = asyncHandler(async (req, res) => {
           accessToken,
           refreshToken,
         },
-        "User login working!"
+        "User logged in successfully!"
       )
     );
 });

@@ -109,15 +109,20 @@ function BusinessRegister({ setRoleToggle }) {
         email: formData.email,
         phone: formData.phone,
         password: formData.password,
-        role: "individual",
+        role: "business",
         profileDetails: {
-          fullName: formData.fullName,
-          address: formData.address,
+          organization_name: formData.organization_name,
+          businessAddress: formData.businessAddress,
           city: formData.city,
           state: formData.state,
           country: formData.country,
           pincode: formData.pincode,
-          profileImage: imageUrl,
+
+          logo: imageUrl,
+          category: formData.category.toLowerCase(),
+          desc: formData.desc,
+          ownerName: formData.ownerName,
+          websiteUrl: formData.websiteUrl,
         },
       });
 
@@ -238,13 +243,53 @@ function BusinessRegister({ setRoleToggle }) {
                 />
                 {isUploading && <span>Uploading...</span>}
               </div>
-              <textarea className="input w-full"></textarea>
+              <textarea className="input w-full" name="desc" value={formData.desc} onChange={handleChange}></textarea>
+            </div>
+
+            <div className="p-4">
+              <h3 className="text-lg font-semibold mb-2">
+                Choose Business Category:
+              </h3>
+              <div className="flex items-center gap-8 ml-8">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="category"
+                  value="food"
+                  checked={formData.category === "food"}
+                  onChange={handleChange}
+                  className="hidden"
+                />
+                <span className="w-5 h-5 border-2 border-secondary rounded-full flex items-center justify-center">
+                  {formData.category === "food" && (
+                    <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
+                  )}
+                </span>
+                <span className="px-2 py-1 rounded-md hover:bg-primary/30">Food</span>
+              </label>
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="category"
+                  value="grocery"
+                  checked={formData.category === "grocery"}
+                  onChange={handleChange}
+                  className="hidden"
+                />
+                <span className="w-5 h-5 border-2 border-secondary rounded-full flex items-center justify-center">
+                  {formData.category === "grocery" && (
+                    <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
+                  )}
+                </span>
+                <span className="px-2 py-1 rounded-md hover:bg-primary/30">Grocery</span>
+              </label>
+              </div>
             </div>
           </div>
 
           <button type="submit" className="submit-btn" disabled={isPending}>
-          {isPending ? "Loggin in..." : "Login"}
-        </button>
+            {isPending ? "Registering..." : "Register"}
+          </button>
         </form>
       </div>
     </div>
