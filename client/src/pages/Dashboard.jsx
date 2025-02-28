@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import {useNavigate} from 'react-router';
 
 const categories = [
   {
@@ -26,6 +27,7 @@ const categories = [
 ];
 
 function Dashboard() {
+  const navigate = useNavigate();
   return (
     <div className="px-6 xs:px-14 sm:px-32 md:px-12 lg:px-44 xl:px-16 py-8 flex flex-col gap-12">
       {/* Hero Section */}
@@ -34,11 +36,13 @@ function Dashboard() {
           <span>Shortlist your products that you want,</span>
           <span>Shop will be ready with your items!</span>
         </p>
-        <button
+        <a
+          href="/self-pick-up"
+          // onClick={() => navigate('/self-pick-up')}
           className="shadow-md shadow-amber-800/35 rounded-full bg-white px-4 py-2 hover:bg-dark hover:text-light duration-500 transition-all cursor-pointer"
         >
           Let's Go
-        </button>
+        </a>
       </div>
 
       {/* Categories & Products */}

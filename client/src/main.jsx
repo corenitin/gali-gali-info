@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App.jsx";
 
 import { Register, Login, Dashboard, SelfPickUp } from "./pages";
-import DashbaordLayout from "./components/DashbaordLayout.jsx";
+import {DashbaordLayout, ProtectedRoute} from "./components";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -18,7 +18,9 @@ createRoot(document.getElementById("root")).render(
             <Route path="dashboard" element={<DashbaordLayout />}>
               <Route path="" element={<Dashboard />} />
             </Route>
-            <Route path="self-pick-up" element={<SelfPickUp />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="self-pick-up" element={<SelfPickUp />} />
+            </Route>
           </Route>
 
           <Route path="/register" element={<Register />} />

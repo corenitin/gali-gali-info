@@ -76,6 +76,7 @@ function Login() {
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="relative w-full">
+          <label className="text-sm">{loginMethod.charAt(0).toUpperCase() + loginMethod.slice(1)}</label>
           <input
             type={loginMethod === "email" ? "text" : "number"}
             name={loginMethod}
@@ -89,7 +90,7 @@ function Login() {
             onClick={toggleLoginMethod}
             onMouseEnter={() => setShowTooltip(true)}
             onMouseLeave={() => setShowTooltip(false)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 text-secondary text-2xl cursor-pointer"
+            className="absolute right-4 top-1 transform -translate-y-1/2 text-secondary text-2xl cursor-pointer"
           >
             <RiExchangeLine />
             {showTooltip && (

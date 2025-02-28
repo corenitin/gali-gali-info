@@ -4,8 +4,10 @@ import { IoPersonCircle } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import api from "../../api";
 import axios from "axios";
-const upload_preset = import.meta.env.VITE_SERVER_URL;
+
+const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
 const cloud_name = import.meta.env.VITE_CLOUD_NAME;
+console.log(upload_preset, cloud_name)
 
 function BusinessRegister({ setRoleToggle }) {
   const [image, setImage] = useState(null);
