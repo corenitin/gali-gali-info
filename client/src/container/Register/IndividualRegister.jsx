@@ -4,10 +4,12 @@ import { IoPersonCircle } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import api from "../../api";
 import axios from "axios";
-
+const upload_preset = import.meta.env.VITE_SERVER_URL;
+const cloud_name = import.meta.env.VITE_CLOUD_NAME;
 function IndividualRegister({ setRoleToggle }) {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
+
 
   const [formData, setFormData] = useState({
     fullName: "",
@@ -51,11 +53,11 @@ function IndividualRegister({ setRoleToggle }) {
     setIsUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "ml_default"); // Replace with your Cloudinary upload preset
+    formData.append("upload_preset", upload_preset); // Replace with your Cloudinary upload preset
 
     try {
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/kjpatel/image/upload", // Replace with your Cloudinary cloud name
+        `https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,
         formData
       );
       setImageUrl(response.data.secure_url);
