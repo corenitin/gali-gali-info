@@ -12,7 +12,7 @@ function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
+  const { user, logout, sidebarToggle } = useAuth();
 
   // Toggle Profile Dropdown
   const toggleDropdown = () => {
@@ -21,7 +21,8 @@ function Navbar() {
 
   // Toggle Mobile Menu
   const toggleMobileMenu = () => {
-    setIsMobileMenuOpen((prev) => !prev);
+    if(user && user.role === 'individual') setIsMobileMenuOpen((prev) => !prev);
+    if(user && user.role === 'business') sidebarToggle();
   };
 
   // Close dropdown when clicking outside
@@ -51,7 +52,7 @@ function Navbar() {
   return (
     <nav className="fixed w-full flex items-center py-1 px-2 bg-light dark:bg-dark">
       {/* Mobile Menu Toggle (Left on small screens) */}
-      {user && user.role === "individual" && (
+      {user && (
         <button
           onClick={toggleMobileMenu}
           className="lg:hidden text-2xl p-2 rounded-md bg-gray-200 dark:bg-primary-dark"

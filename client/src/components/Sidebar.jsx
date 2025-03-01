@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router";
+import { useAuth } from "../context/AuthContext";
 
 function Sidebar() {
   const links = [
@@ -9,9 +10,12 @@ function Sidebar() {
     { title: "Notifications", to: "notifications" },
   ];
 
+  const { sidebarOpen } = useAuth();
+
   return (
-    <div className="bg-primary/5 dark:bg-primary-dark/15 min-h-screen fixed px-4 py-8">
-      <ul className="flex flex-col gap-8">
+    <div className={`${sidebarOpen ? "flex" : "hidden"} bg-base-light dark:bg-base-dark fixed `}>
+      <div className="px-4 py-8 bg-primary/5 dark:bg-primary-dark/15 min-h-screen">
+      <ul className="flex flex-col gap-8 ">
         {links.map((link) => (
           <NavLink
             to={`/business/${link.to}`}
@@ -28,6 +32,7 @@ function Sidebar() {
           </NavLink>
         ))}
       </ul>
+      </div>
     </div>
   );
 }

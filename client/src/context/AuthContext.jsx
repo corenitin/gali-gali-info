@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
         const storedUser = localStorage.getItem("user");
         return storedUser ? JSON.parse(storedUser) : null;
     });
+    const [ sidebarOpen, setSidebarOpen ] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -27,8 +28,12 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("user");
     };
 
+    const sidebarToggle = () => {
+        setSidebarOpen((prev) => !prev)
+    }
+
     return (
-        <AuthContext.Provider value={{ user, login, logout }}>
+        <AuthContext.Provider value={{ user, login, logout, sidebarToggle, sidebarOpen }}>
             {children}
         </AuthContext.Provider>
     );

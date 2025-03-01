@@ -1,16 +1,18 @@
-import React from 'react'
-import Sidebar from './Sidebar';
-import { Outlet } from 'react-router';
+import React from "react";
+import Sidebar from "./Sidebar";
+import { Outlet } from "react-router";
 
 function BusinessLayout() {
   return (
-    <div className='flex'>
+    <div className="flex">
+      <div className="bg-base-light dark:bg-base-dark z-10">
         <Sidebar />
-        <div className='ml-52'>
+      </div>
+      <div className="">
         <Outlet />
-        </div>
+      </div>
     </div>
-  )
+  );
 }
 
 export default BusinessLayout;
