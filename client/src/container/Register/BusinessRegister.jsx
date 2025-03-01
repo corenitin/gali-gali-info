@@ -179,7 +179,7 @@ function BusinessRegister({ setRoleToggle }) {
 
       <div>
         <form onSubmit={handleSubmit} className="w-full flex flex-col gap-6">
-          <div className="w-full flex gap-6">
+          <div className="w-full flex flex-col md:flex-row gap-6">
             <ul className="w-full flex flex-col gap-6">
               {firstHalf.map((key, index) => (
                 <input

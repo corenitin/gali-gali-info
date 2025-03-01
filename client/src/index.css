@@ -74,7 +74,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .container {
-    @apply px-4 py-8 xs:py-4 sm:p-12 my-16 xs:mx-4 bg-light dark:bg-dark border-y xs:border border-primary xs:rounded-2xl xs:shadow-xl shadow-blue-shadow/10;
+    @apply p-4 xs:p-8 sm:p-16 md:p-4 lg:p-12 my-16 xs:mx-4 bg-light dark:bg-dark border-y xs:border border-primary xs:rounded-2xl xs:shadow-xl shadow-blue-shadow/10;
 }
 
 .head-1 {
