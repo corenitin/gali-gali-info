@@ -37,48 +37,61 @@ function Navbar() {
     };
   }, []);
 
-  const handleLogout = async() => {
+  const handleLogout = async () => {
     try {
-      const res = await api.post('/users/logout');
-      if(res.status === 200) {
+      const res = await api.post("/users/logout");
+      if (res.status === 200) {
         logout();
-      } 
+      }
     } catch (error) {
-      console.log('Error while logging out,', error)
+      console.log("Error while logging out,", error);
     }
-  }
-  return (
-    <nav className="fixed w-full flex justify-between items-center px-2 lg:px-2 py-1 lg:py-1.5 bg-light dark:bg-dark">
-      {/* Left Side: Logo */}
-      <div className="flex items-center gap-2">
-        <img src={gali_logo} alt="" className="bg-secondary rounded-full w-12 h-12" />
-        <h1 className="hidden xs:flex text-primary text-xl font-bold">GaliGaliInfo</h1>
-      </div>
+  };
 
-      {/* Center: Search & Area Selection */}
-      <div className="hidden lg:lex gap-4">
-        <input type="text" placeholder="Select Area" className="input py-0" />
-        <input type="text" placeholder="Search" className="input min-w-96" />
+  return (
+    <nav className="fixed w-full flex items-center py-1 px-2 bg-light dark:bg-dark">
+      {/* Mobile Menu Toggle (Left on small screens) */}
+      {user && user.role === "individual" && (
+        <button
+          onClick={toggleMobileMenu}
+          className="lg:hidden text-2xl p-2 rounded-md bg-gray-200 dark:bg-primary-dark"
+        >
+          {isMobileMenuOpen ? <IoClose /> : <FiMenu />}
+        </button>
+      )}
+
+      {/* Website Name & Logo */}
+      <div className="flex-1 flex items-center justify-center lg:justify-start gap-2">
+        <img src={gali_logo} alt="Logo" className="bg-secondary rounded-full w-12 h-12 hidden sm:flex" />
+        <h1 className="text-primary text-xl font-bold sm:flex hidden">GaliGaliInfo</h1>
+        <h1 className="text-primary text-xl font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
+          GaliGaliInfo
+        </h1>
       </div>
 
       {/* Right Side: Profile & Mobile Menu */}
       <div className="flex items-center gap-1">
-        {/* Mobile Menu Toggle */}
-        <button
-          onClick={toggleMobileMenu}
-          className="lg:hidden text-2xl p-2 rounded-md bg-gray-200 dark:bg-gray-700"
-        >
-          {isMobileMenuOpen ? <IoClose /> : <FiMenu />}
-        </button>
-
         {/* Profile Section */}
         <div ref={dropdownRef} className="relative">
           <div
             onClick={toggleDropdown}
             className="flex items-center gap-1 rounded-full hover:bg-primary/15 px-1.5 py-1 border border-transparent hover:border-primary/15 cursor-pointer"
           >
-            {user && user.photo ? (<img src={user.photo} alt="" className="w-10 h-10 rounded-full" />) : (<DarkModeBtn />)}
-            {user && user.name ? (<span className="text-lg hidden sm:block">{user.name}</span>) : (<button onClick={() => navigate('/login')} className="px-4 py-2 rounded-md text-light bg-primary hover:bg-primary-dark">Login</button>)}
+            {user && user.photo ? (
+              <img src={user.photo} alt="" className="w-10 h-10 rounded-full" />
+            ) : (
+              <DarkModeBtn />
+            )}
+            {user && user.name ? (
+              <span className="text-lg hidden sm:block">{user.name}</span>
+            ) : (
+              <button
+                onClick={() => navigate("/login")}
+                className="px-4 py-2 rounded-md text-light bg-primary hover:bg-primary-dark"
+              >
+                Login
+              </button>
+            )}
           </div>
 
           {/* Dropdown Menu */}
@@ -93,7 +106,10 @@ function Navbar() {
                   <DarkModeBtn />
                 </li>
                 <div className="w-full h-px bg-dark/15 dark:bg-light/15 my-2"></div>
-                <li onClick={handleLogout} className="hover-border cursor-pointer py-1 w-full text-center">
+                <li
+                  onClick={handleLogout}
+                  className="hover-border cursor-pointer py-1 w-full text-center"
+                >
                   Logout
                 </li>
               </ul>

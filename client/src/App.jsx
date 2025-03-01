@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="min-h-screen bg-base-light dark:bg-base-dark text-dark dark:text-light">
       <Navbar />
-      <div className="min-h-screen pt-16 lg:pt-16">
+      <div className="min-h-screen pt-[3.75rem]">
         <Outlet />
       </div>
       <Footer />
