@@ -40,6 +40,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
   let newUser;
   if (role === "individual") {
+    
     newUser = await Individual.create({
       email,
       phone,

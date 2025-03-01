@@ -4,8 +4,17 @@ import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router";
 import "./index.css";
 import App from "./App.jsx";
 
-import { Register, Login, Dashboard, SelfPickUp } from "./pages";
-import {DashbaordLayout, ProtectedRoute} from "./components";
+import {
+  Register,
+  Login,
+  Dashboard,
+  SelfPickUp,
+  BusinessDashboard,
+  Listings,
+  PickUpRequests,
+  Notification,
+} from "./pages";
+import { BusinessLayout, DashbaordLayout, ProtectedRoute } from "./components";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -20,6 +29,12 @@ createRoot(document.getElementById("root")).render(
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path="self-pick-up" element={<SelfPickUp />} />
+              <Route path="business" element={<BusinessLayout />}>
+                <Route path="dashboard" element={<BusinessDashboard />} />
+                <Route path="listings" element={<Listings />} />
+                <Route path="pick-up-requests" element={<PickUpRequests />} />
+                <Route path="notifications" element={<Notification />} />
+              </Route>
             </Route>
           </Route>
 

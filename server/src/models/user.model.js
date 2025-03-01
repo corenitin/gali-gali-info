@@ -69,6 +69,7 @@ userSchema.methods.generateRefreshToken = function() {
 const User = model("User", userSchema);
 
 const individualSchema = new Schema({
+  fullName: {type: String},
   profileImage: { type: String },
   address: { type: String },
   city: { type: String },
