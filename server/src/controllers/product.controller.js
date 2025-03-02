@@ -103,11 +103,44 @@ const deleteProduct = asyncHandler(async(req, res) => {
         new ApiResponse(200, "Product deleted successfully!")
     ) 
 })
+
+const updateById =  asyncHandler(async(req, res) => {
+    const { id } = req.params;
+    const product = req.body;
+
+    if(!id) {
+        throw new ApiError(409, "Product id not given!")
+    }
+
+    if (!product || Object.keys(product).length === 0) {
+        throw new ApiError(
+            400,
+            "Product details not found that need be updated!",
+        );
+    }
+
+    const updatedProduct = await Product.findByIdAndUpdate(id, product, {
+        new: true,
+    });
+    if (!updatedProduct) {
+        throw new ApiError(500, "Error while updating product details!");
+    }
+
+    return res.json(
+        new ApiResponse(
+            200,
+            updatedProduct,
+            "Product details updated successfully!",
+        ),
+    );
+});
+
 export { 
     addProduct,
     getAll, 
     getById,
-    deleteProduct
+    deleteProduct,
+    updateById,
 };
 
 // let createdOffers = [];

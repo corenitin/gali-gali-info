@@ -32,9 +32,7 @@ function AddProduct() {
     },
   ];
 
-  const [images, setImages] = useState(
-    () => JSON.parse(localStorage.getItem("uploadedImages")) || []
-  );
+  const [images, setImages] = useState([]);
   const [offers, setOffers] = useState([]);
   const [error, setError] = useState("");
   const [apiError, setApiError] = useState("");
@@ -77,7 +75,6 @@ function AddProduct() {
 
     const validImages = uploadedImages.filter((url) => url !== null);
     const updatedImages = [...images, ...validImages];
-    localStorage.setItem("uploadedImages", JSON.stringify(updatedImages));
     setImages(updatedImages);
     setIsUploading(false);
   };
@@ -85,7 +82,6 @@ function AddProduct() {
   const handleDeleteImage = (index) => {
     const updatedImages = images.filter((_, i) => i !== index);
     setImages(updatedImages);
-    localStorage.setItem("uploadedImages", JSON.stringify(updatedImages));
   };
 
   const handleAddOffer = () => {
