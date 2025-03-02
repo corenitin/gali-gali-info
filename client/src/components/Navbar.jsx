@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { FiMenu } from "react-icons/fi"; // Hamburger icon
 import { IoClose } from "react-icons/io5"; // Close icon
 import DarkModeBtn from "./DarkModeBtn";
-import gali_logo from "../assets/gali_logo.jpg";
+import gali_logo from "../assets/gali-logo.png";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router";
 import api from "../api";
@@ -64,8 +64,8 @@ function Navbar() {
       {/* Website Name & Logo */}
       <div className="flex-1 flex items-center justify-center lg:justify-start gap-2">
         <img src={gali_logo} alt="Logo" className="bg-secondary rounded-full w-12 h-12 hidden sm:flex" />
-        <h1 className="text-primary text-xl font-bold sm:flex hidden">GaliGaliInfo</h1>
-        <h1 className="text-primary text-xl font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
+        <h1 className="text-dark text-3xl font-extrabold sm:flex hidden">GaliGaliInfo</h1>
+        <h1 className="text-dark text-xl font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
           GaliGaliInfo
         </h1>
       </div>
