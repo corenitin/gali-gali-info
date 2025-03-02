@@ -22,8 +22,8 @@ function AddProduct() {
 
   const handleImageUpload = async (e) => {
     const files = Array.from(e.target.files);
-    if (images.length + files.length > 9) {
-      setError("You can upload up to 9 images only.");
+    if (images.length + files.length > 12) {
+      setError("You can upload up to 12 images only.");
       return;
     }
 
@@ -86,7 +86,7 @@ function AddProduct() {
           </div>
           {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
           
-          <ul className="bg-light/1 border border-light/5 grid grid-cols-3 gap-8 p-4 rounded-lg mt-2">
+          <ul className="bg-dark/1 dark:bg-light/1 border border-dark/g dark:border-light/5 grid grid-cols-4 gap-8 p-4 rounded-lg mt-2">
             {images.map((img, index) => (
               <div key={index} className="relative w-24 h-24">
                 <img src={img} alt="Uploaded" className="w-full h-full rounded-md" />

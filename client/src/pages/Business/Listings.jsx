@@ -144,7 +144,7 @@ function Listings() {
           </ul>
         </div> */}
         <div className="">
-          <div className="flex flex-col xs:flex-row justify-between">
+          <div className="flex flex-col xs:flex-row justify-between mx-4">
             <h2 className="head-2">Products without collection:</h2>
             <Link to={'/business/listings/add-product'} className="btn-1">Add a new product</Link>
           </div>
