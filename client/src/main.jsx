@@ -14,6 +14,7 @@ import {
   PickUpRequests,
   Notification,
   AddProduct,
+  EditProduct,
 } from "./pages";
 import { BusinessLayout, DashbaordLayout, ProtectedRoute } from "./components";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -35,6 +36,7 @@ createRoot(document.getElementById("root")).render(
                 <Route path="listings" element={<Outlet />}>
                   <Route path="" element={<Listings />} />
                   <Route path="add-product" element={<AddProduct />} />
+                  <Route path="edit-product/:id" element={<EditProduct />} />
                 </Route>
                 <Route path="pick-up-requests" element={<PickUpRequests />} />
                 <Route path="notifications" element={<Notification />} />

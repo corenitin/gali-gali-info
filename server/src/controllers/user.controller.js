@@ -70,9 +70,9 @@ const registerUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  const { email='', phone=0, password } = req.body;
+  const { email, phone, password } = req.body;
   console.log(email, phone, password)
-  if(!(!(email==="") || !(phone===0)) || !password) {
+  if((!email && !phone) || !password) {
     console.log('in')
     throw new ApiError(400, "Please provide email or phone and password!");
   }
