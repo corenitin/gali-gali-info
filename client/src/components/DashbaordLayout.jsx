@@ -5,7 +5,7 @@ import { Outlet } from "react-router";
 function DashbaordLayout() {
   return (
     <div>
-        <DashboardNavbar />
+        {/* <DashboardNavbar /> */}
         <Outlet />
     </div>
   )

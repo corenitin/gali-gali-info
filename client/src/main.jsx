@@ -16,6 +16,7 @@ import {
   Notification,
   AddProduct,
   EditProduct,
+  Category,
 } from "./pages";
 import { BusinessLayout, DashbaordLayout, ProtectedRoute } from "./components";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -29,6 +30,7 @@ createRoot(document.getElementById("root")).render(
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<DashbaordLayout />}>
               <Route path="" element={<Dashboard />} />
+              <Route path="category/:name" element={<Category />} />
             </Route>
             <Route element={<ProtectedRoute />}>
               <Route path="self-pick-up" element={<SelfPickUp />} />

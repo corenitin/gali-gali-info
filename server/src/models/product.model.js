@@ -38,7 +38,10 @@ const productSchema = new Schema({
     //     type: Schema.Types.ObjectId,
     //     ref: "Offer"
     // }],
-    overallRating: Number,
+    overallRating: {
+        type: Number,
+        default: 0
+    },
     reviews: [
         {
             type: Schema.Types.ObjectId,

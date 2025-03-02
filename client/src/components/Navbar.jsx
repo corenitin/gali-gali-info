@@ -21,8 +21,9 @@ function Navbar() {
 
   // Toggle Mobile Menu
   const toggleMobileMenu = () => {
-    if(user && user.role === 'individual') setIsMobileMenuOpen((prev) => !prev);
-    if(user && user.role === 'business') sidebarToggle();
+    if (user && user.role === "individual")
+      setIsMobileMenuOpen((prev) => !prev);
+    if (user && user.role === "business") sidebarToggle();
   };
 
   // Close dropdown when clicking outside
@@ -63,11 +64,22 @@ function Navbar() {
 
       {/* Website Name & Logo */}
       <div className="flex-1 flex items-center justify-center lg:justify-start gap-2">
-        <img src={gali_logo} alt="Logo" className="bg-secondary rounded-full w-12 h-12 hidden sm:flex" />
-        <h1 className="text-dark text-3xl font-extrabold sm:flex hidden">GaliGaliInfo</h1>
-        <h1 className="text-dark text-xl font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
+        <img
+          src={gali_logo}
+          alt="Logo"
+          className="bg-secondary rounded-full w-12 h-12 hidden sm:flex"
+        />
+        <h1 className="text-dark dark:text-light text-3xl font-bold sm:flex hidden">
+          Gali Gali Info
+        </h1>
+        <h1 className="text-dark dark:text-light text-xl font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
           GaliGaliInfo
         </h1>
+      </div>
+
+      <div className="w-full max-w-2xl xl:max-w-4xl justify-center bg-light dark:bg-dark shadow-lg pt-2 gap-4 hidden lg:flex">
+        <input type="text" placeholder="Select Area" className="input mb-2" />
+        <input type="text" placeholder="Search" className="input mb-2 w-full max-w-80 xl:max-w-md" />
       </div>
 
       {/* Right Side: Profile & Mobile Menu */}
@@ -121,9 +133,9 @@ function Navbar() {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-light dark:bg-dark shadow-lg p-4 lg:hidden">
+        <div className="absolute top-14 left-0 w-full bg-light dark:bg-dark shadow-lg p-4 flex flex-col xs:flex-row gap-4 lg:hidden">
           <input type="text" placeholder="Select Area" className="input mb-2" />
-          <input type="text" placeholder="Search" className="input mb-2" />
+          <input type="text" placeholder="Search" className="input mb-2 w-full max-w-md" />
         </div>
       )}
     </nav>

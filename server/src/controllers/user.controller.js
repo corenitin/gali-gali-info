@@ -133,5 +133,24 @@ const logoutUser = asyncHandler(async (req, res) => {
       .json(new ApiResponse(200, {}, "User successfully logged out!"));
 });
 
+const getUserById = asyncHandler(async(req, res) => {
+  const { id } = req.params;
+  if(!id) {
+    throw new ApiError(409, "User id required!")
+  }
 
-export { registerUser, loginUser, logoutUser };
+  const user = await User.findById(id).select(
+    "-password -refreshToken"
+  );;
+  if(!user) {
+    throw new ApiError('User not found')
+  }
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(200, user, "User fetched successfully")
+  )
+})
+
+export { registerUser, loginUser, logoutUser, getUserById };

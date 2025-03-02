@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import api from "../api.js";
 import { Loading } from "../components";
 
@@ -106,9 +106,11 @@ function Dashboard() {
 
                   {/* "See More" Button (Adjusts on Mobile) */}
                   <div className="flex justify-center mt-4 xl:mr-4 xl:ml-6">
-                    <button className="h-fit text-white bg-primary px-2 py-2 rounded-full hover:bg-primary-dark transition cursor-pointer">
+                    <Link 
+                      to={`/dashboard/category/${category.name.toLowerCase()}`}
+                      className="h-fit text-white bg-primary px-2 py-2 rounded-full hover:bg-primary-dark transition cursor-pointer">
                       See More
-                    </button>
+                    </Link>
                   </div>
                 </div>
               </div>
