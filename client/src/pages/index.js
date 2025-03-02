@@ -1,3 +1,4 @@
+import AddProduct from "./Business/AddProduct";
 import BusinessDashboard from "./Business/BusinessDashboard";
 import Listings from "./Business/Listings";
 import Notification from "./Business/Notification";
@@ -16,4 +17,5 @@ export {
   Listings,
   Notification,
   PickUpRequests,
+  AddProduct,
 };

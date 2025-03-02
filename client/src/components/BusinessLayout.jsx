@@ -4,9 +4,9 @@ import { Outlet } from "react-router";
 
 function BusinessLayout() {
   return (
-    <div className="flex">
+    <div className="flex w-full">
       <Sidebar />
-      <div className="lg:ml-[12.65rem]">
+      <div className="w-full lg:ml-[12.65rem]">
         <Outlet />
       </div>
     </div>

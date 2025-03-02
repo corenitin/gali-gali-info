@@ -1,6 +1,6 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Route, BrowserRouter as Router, Routes, Navigate } from "react-router"; // Import Navigate
+import { Route, BrowserRouter as Router, Routes, Navigate, Outlet } from "react-router"; // Import Navigate
 import "./index.css";
 import App from "./App.jsx";
 
@@ -13,6 +13,7 @@ import {
   Listings,
   PickUpRequests,
   Notification,
+  AddProduct,
 } from "./pages";
 import { BusinessLayout, DashbaordLayout, ProtectedRoute } from "./components";
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -31,7 +32,10 @@ createRoot(document.getElementById("root")).render(
               <Route path="self-pick-up" element={<SelfPickUp />} />
               <Route path="business" element={<BusinessLayout />}>
                 <Route path="dashboard" element={<BusinessDashboard />} />
-                <Route path="listings" element={<Listings />} />
+                <Route path="listings" element={<Outlet />}>
+                  <Route path="" element={<Listings />} />
+                  <Route path="add-product" element={<AddProduct />} />
+                </Route>
                 <Route path="pick-up-requests" element={<PickUpRequests />} />
                 <Route path="notifications" element={<Notification />} />
               </Route>

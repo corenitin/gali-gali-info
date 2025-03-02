@@ -91,7 +91,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .input {
-    @apply border border-secondary/60 px-3 py-2 rounded-md bg-base-light dark:bg-base-light/10 outline-none 
+    @apply border border-secondary/60 px-3 py-2 rounded-md bg-base-light dark:bg-base-light/10 outline-none min-w-96 
 }
 
 .input:focus {
