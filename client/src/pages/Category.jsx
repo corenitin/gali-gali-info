@@ -87,11 +87,11 @@ function Category() {
         Category | {name.charAt(0).toUpperCase() + name.slice(1)}
       </h2>
       {isPending && <Loading />}
-      <ul className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-4 p-4">
+      <ul className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4">
         {products.map((product) => (
           <li
             key={product._id}
-            className="w-fit flex flex-col gap-4 p-4 bg-light dark:bg-dark rounded-2xl"
+            className="w-fit flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 bg-light dark:bg-dark rounded-2xl"
           >
             <img
               src={product.images[0]}
@@ -106,7 +106,7 @@ function Category() {
                     "Loading..."}
                 </span>
               </div>
-              <div className="flex flex-col items-center justify-center border border-secondary rounded-2xl px-4 py-2">
+              <div className="flex flex-col items-center justify-center border border-secondary rounded-2xl px-2 xs:px-4 py-1 xs:py-2">
                 <FaStar className="text-secondary" />
                 <span>4.5</span>
               </div>
