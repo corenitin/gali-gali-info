@@ -87,7 +87,7 @@ function Category() {
         Category | {name.charAt(0).toUpperCase() + name.slice(1)}
       </h2>
       {isPending && <Loading />}
-      <ul className="grid xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4">
+      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4">
         {products.map((product) => (
           <li
             key={product._id}
