@@ -6,7 +6,7 @@ function BusinessLayout() {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="m-4 lg:ml-56">
+      <div className="lg:ml-[12.65rem]">
         <Outlet />
       </div>
     </div>
