@@ -1,33 +1,48 @@
-import React, { useState } from "react";
-import {useNavigate} from 'react-router';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import api from "../api.js";
 
-const categories = [
-  {
-    name: "Foods",
-    products: [
-      { name: "Rice", img: "https://lh5.googleusercontent.com/p/AF1QipOs69Tq_Qbzzzu6zmCWgpebtG9R7a1krnvr9Hiv=w92-h92-n-k-no" },
-      { name: "Bread", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAwIwB4AGz6m0ansF8-ilMRHme7v8-SINA9w&s" },
-      { name: "Milk", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzW1jFrJ5fNv4NfIlG5a0AF7I3sqh3hKiUg&s" },
-      { name: "Eggs", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LjNziitok4Ja-eDJA2b0jE5VhdieQdVrsA&s" },
-      { name: "Eggs1", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LjNziitok4Ja-eDJA2b0jE5VhdieQdVrsA&s" },
-      { name: "Eggs2", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LjNziitok4Ja-eDJA2b0jE5VhdieQdVrsA&s" },
-    ],
-  },
-  {
-    name: "Grocery",
-    products: [
-      { name: "Rice", img: "https://lh5.googleusercontent.com/p/AF1QipOs69Tq_Qbzzzu6zmCWgpebtG9R7a1krnvr9Hiv=w92-h92-n-k-no" },
-      { name: "Bread", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAwIwB4AGz6m0ansF8-ilMRHme7v8-SINA9w&s" },
-      { name: "Milk", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTJzW1jFrJ5fNv4NfIlG5a0AF7I3sqh3hKiUg&s" },
-      { name: "Eggs", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LjNziitok4Ja-eDJA2b0jE5VhdieQdVrsA&s" },
-      { name: "Eggs1", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LjNziitok4Ja-eDJA2b0jE5VhdieQdVrsA&s" },
-      { name: "Eggs2", img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR0LjNziitok4Ja-eDJA2b0jE5VhdieQdVrsA&s" },
-    ],
-  },
-];
 
 function Dashboard() {
   const navigate = useNavigate();
+  const [isPending, setIsPending] = useState(false);
+  
+  const [food, setFood] = useState([]);
+  const [grocery, setGrocery] = useState([]);
+  
+  const categories = [
+    {
+      name: "Food",
+      setter: setFood,
+      items: food
+    },
+    {
+      name: "Grocery",
+      setter: setGrocery,
+      items: grocery
+    },
+  ];
+
+  const fetchProducts = async (category, setCategory) => {
+    try {
+      const res = await api.get(`/business/products/c/${category}`);
+      if (res.status === 200) {
+        setCategory(res.data.data);
+        console.log(res.data.data)
+      }
+    } catch (error) {
+      console.log("Error while fetching products ", category);
+    }
+  };
+
+  useEffect(() => {
+    setIsPending(true);
+    categories.map((item) => (
+      fetchProducts(item.name.toLowerCase(), item.setter)
+    ))
+    setIsPending(false);
+  },[]);
+
   return (
     <div className="px-6 xs:px-14 sm:px-32 md:px-12 lg:px-44 xl:px-16 py-8 flex flex-col gap-12">
       {/* Hero Section */}
@@ -55,13 +70,17 @@ function Dashboard() {
             {/* Product List */}
             <div className="bg-primary/10 p-4 xs:p-6 rounded-xl flex flex-col md:flex-row justify-evenly items-center">
               <ul className="grid xs:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-6">
-                {category.products.map((item, i) => (
+                {categories && category.items && category.items.map((item, i) => (
                   <li
                     key={i}
                     className="w-fit bg-light dark:bg-dark rounded-3xl p-4 flex flex-col items-center gap-2 shadow-lg hover:shadow-blue-shadow/25 cursor-pointer"
                   >
-                    <img src={item.img} alt={item.name} className="w-32 h-32 rounded-2xl" />
-                    <span className="text-sm xs:text-base">{item.name}</span>
+                    <img
+                      src={item.images[0]}
+                      alt={item.title}
+                      className="w-32 h-32 rounded-2xl"
+                    />
+                    <span className="text-sm xs:text-base">{item.title}</span>
                   </li>
                 ))}
               </ul>
@@ -80,5 +99,4 @@ function Dashboard() {
   );
 }
 
-export { categories };
 export default Dashboard;

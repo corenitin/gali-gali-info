@@ -1,8 +1,16 @@
 import React from "react";
-import { categories } from "../pages/Dashboard";
+// import { categories } from "../pages/Dashboard";
 import { IoIosArrowDown } from "react-icons/io";
 
 function DashboardNavbar() {
+  const categories = [
+      {
+        name: "Food",
+      },
+      {
+        name: "Grocery",
+      },
+    ];
   return (
     <div className="bg-light dark:bg-dark px-6 xs:px-8 md:px-16 py-3 border-y border-primary flex gap-4 flex-wrap">
       <span className="flex gap-2">
