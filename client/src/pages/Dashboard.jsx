@@ -50,7 +50,7 @@ function Dashboard() {
         {categories.map((category, index) => (
           <li key={index} className="flex flex-col gap-4">
             {/* Category Title */}
-            <h3 className="head-3 ml-2">{category.name}:</h3>
+            <h3 className="head-2 ml-2">{category.name}:</h3>
 
             {/* Product List */}
             <div className="bg-primary/10 p-4 xs:p-6 rounded-xl flex flex-col md:flex-row justify-evenly items-center">

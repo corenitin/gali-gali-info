@@ -13,7 +13,7 @@ function Sidebar() {
   const { sidebarOpen } = useAuth();
 
   return (
-    <div className={`${sidebarOpen ? "flex" : "hidden"} bg-base-light dark:bg-base-dark fixed `}>
+    <div className={`${sidebarOpen ? "flex" : "hidden"} lg:flex bg-base-light dark:bg-base-dark fixed `}>
       <div className="px-4 py-8 bg-primary/5 dark:bg-primary-dark/15 min-h-screen">
       <ul className="flex flex-col gap-8 ">
         {links.map((link) => (

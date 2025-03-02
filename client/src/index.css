@@ -86,7 +86,7 @@ body::-webkit-scrollbar-thumb:hover {
 }
 
 .head-3 {
-    @apply text-lg xs:text-xl font-medium
+    @apply font-medium
 }
 
 .input {
@@ -103,4 +103,8 @@ body::-webkit-scrollbar-thumb:hover {
 
 .hover-border {
     @apply cursor-pointer hover:bg-primary/15 hover:dark:bg-primary/15 px-3 py-2 rounded-full border border-transparent hover:border-primary/50 hover:dark:border-primary/50 duration-300 transition-all
+}
+
+.container-2 {
+    @apply h-fit rounded-xl border p-8 flex flex-col gap-4
 }
