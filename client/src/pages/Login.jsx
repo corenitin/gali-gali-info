@@ -37,6 +37,7 @@ function Login() {
       const email = res.data.data.user.email;
       const phone = res.data.data.user.phone;
       const role = res.data.data.user.role;
+      const category = res.data.data.user.category;
 
       let photo = ''
       let name = '';
@@ -50,7 +51,7 @@ function Login() {
         photo = res.data.data.user.logo;
       }
       if(res.status === 200) {
-        login({ email, phone, name, photo, role })
+        login({ email, phone, name, photo, role, category })
         role === 'business' ? navigate("/business/dashboard") : navigate('/dashboard');
       } // Redirect on success
     } catch (err) {

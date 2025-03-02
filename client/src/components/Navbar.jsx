@@ -50,7 +50,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="fixed w-full flex items-center py-1 px-2 bg-light dark:bg-dark">
+    <nav className="z-50 fixed w-full flex items-center py-1 px-2 bg-light dark:bg-dark">
       {/* Mobile Menu Toggle (Left on small screens) */}
       {user && (
         <button

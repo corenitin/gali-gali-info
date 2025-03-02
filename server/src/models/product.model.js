@@ -1,6 +1,11 @@
 import { Schema, model } from "mongoose";
 
 const productSchema = new Schema({
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+        required: true
+    },
     category: {
         type: String,
         required: true
@@ -28,16 +33,11 @@ const productSchema = new Schema({
         type: String,
         required: true
     },
-    details: [
-        {
-            title: String,
-            desc: String,
-        }
-    ],
-    offers: [{
-        type: Schema.Types.ObjectId,
-        ref: "Offer"
-    }],
+    offers: [{ type: String }],
+    // offers: [{
+    //     type: Schema.Types.ObjectId,
+    //     ref: "Offer"
+    // }],
     overallRating: Number,
     reviews: [
         {
