@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api";
+import { useNavigate, useParams } from "react-router";
 
 function AddProduct() {
   const inputs = [
@@ -38,6 +39,7 @@ function AddProduct() {
   const [apiError, setApiError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const { user } = useAuth();
 
@@ -127,7 +129,9 @@ function AddProduct() {
 
     try {
       const response = await api.post("/business/products/add", formData);
-      console.log("Success:", response.data.data);
+      if(response.status === 200) {
+        navigate('/business/listings')
+      }
     } catch (error) {
       setApiError(error.response?.data?.message || "Something went wrong");
     } finally {

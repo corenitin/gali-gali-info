@@ -41,7 +41,7 @@ const addProduct = asyncHandler(async (req, res) => {
         offers
     });
 
-    return res.status(201).json(new ApiResponse(201, {
+    return res.status(200).json(new ApiResponse(201, {
         product,
     }, "Product and Offers created successfully!"));
 });
@@ -135,12 +135,30 @@ const updateById =  asyncHandler(async(req, res) => {
     );
 });
 
+const getAllProductsByCategory = asyncHandler(async(req, res) => {
+    const { category } = req.params;
+    if(!category) {
+        throw new ApiError(409, "Category required!")
+    }
+    const products = await Product.find({category});
+    if (!products) {
+        throw new ApiError(404, `Products not found for ${category}!`)
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, products, `All products fetched successfully for ${category}`)
+    )
+})
+
 export { 
     addProduct,
     getAll, 
     getById,
     deleteProduct,
     updateById,
+    getAllProductsByCategory
 };
 
 // let createdOffers = [];
