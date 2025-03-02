@@ -96,7 +96,7 @@ function Category() {
             <img
               src={product.images[0]}
               alt={product.title}
-              className="w-40 h-28 rounded-2xl"
+              className="w-full h-28 rounded-2xl"
             />
             <div className="flex justify-between items-center">
               <div>
