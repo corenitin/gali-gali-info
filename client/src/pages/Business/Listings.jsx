@@ -4,6 +4,7 @@ import { BiEditAlt, BiSolidEditAlt } from "react-icons/bi";
 import { MdDeleteOutline, MdDelete } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
 import api from "../../api";
+import { Loading } from "../../components";
 
 function Listings() {
   const collections = [
@@ -72,6 +73,8 @@ function Listings() {
       console.log("Error while fetching products!", error);
     } finally {
       setIsPending(false);
+      setTimeout(() => {
+      }, 3000);
     }
   };
   useEffect(() => {
@@ -122,10 +125,7 @@ function Listings() {
             </Link>
           </div>
           {isPending ? (
-            <div className="flex">
-              <span className="opacity-50">Fetching data...</span>
-              <div className="ml-2 animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-            </div>
+            <Loading />
           ) : (
             <div className="flex px-0 xs:px-4 py-4">
               <div className="overflow-x-auto w-[58rem] xs:w-full">

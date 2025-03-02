@@ -3,124 +3,176 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @theme {
-    --color-base-light: #F8F9FA;
-    --color-base-dark: #111111; 
-    --color-primary: #007BFF;
-    --color-primary-dark: #0064ce;
-    --color-secondary: #FFC107;
-    --color-blue-shadow: #0054AE;
-    --color-dark: #000;
-    --color-light: #fff;
-    --color-footer: #000F1F;
+  --color-base-light: #f8f9fa;
+  --color-base-dark: #111111;
+  --color-primary: #007bff;
+  --color-primary-dark: #0064ce;
+  --color-secondary: #ffc107;
+  --color-blue-shadow: #0054ae;
+  --color-dark: #000;
+  --color-light: #fff;
+  --color-footer: #000f1f;
 
-    --breakpoint-xs: 475px;
-    --breakpoint-3xl: 1575px;
+  --breakpoint-xs: 475px;
+  --breakpoint-3xl: 1575px;
 }
 
 body {
-    font-family: "Lexend", serif;
+  font-family: "Lexend", serif;
 }
 
 /* Global Scrollbar Styling */
-html, body {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary) var(--color-base-light);
+html,
+body {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-primary) var(--color-base-light);
 }
 
 /* Webkit (Chrome, Edge, Safari) */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+  width: 8px;
+  height: 8px;
 }
 
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
-    background: var(--color-base-light); /* Light mode background */
-    border-radius: 10px;
+  background: var(--color-base-light); /* Light mode background */
+  border-radius: 10px;
 }
 
 html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-    background: var(--color-primary); /* Primary color */
-    border-radius: 10px;
-    transition: background 0.3s ease;
+  background: var(--color-primary); /* Primary color */
+  border-radius: 10px;
+  transition: background 0.3s ease;
 }
 
 html::-webkit-scrollbar-thumb:hover,
 body::-webkit-scrollbar-thumb:hover {
-    background: var(--color-primary-dark);
+  background: var(--color-primary-dark);
 }
 
 /* Dark Mode */
 .dark {
-    scrollbar-color: var(--color-secondary) var(--color-base-dark);
+  scrollbar-color: var(--color-secondary) var(--color-base-dark);
 }
 
 .dark::-webkit-scrollbar-track {
-    background: var(--color-base-dark);
+  background: var(--color-base-dark);
 }
 
 .dark::-webkit-scrollbar-thumb {
-    background: var(--color-secondary);
+  background: var(--color-secondary);
 }
 
 .dark::-webkit-scrollbar-thumb:hover {
-    background: var(--color-blue-shadow);
+  background: var(--color-blue-shadow);
 }
 
+.wave-spinner {
+  display: flex;
+  gap: 0.25rem;
+}
+.wave-spinner div {
+  width: 0.5rem;
+  height: 1.5rem;
+  background-color: #3b82f6;
+  animation: wave 1s ease-in-out infinite;
+}
+.wave-spinner div:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.wave-spinner div:nth-child(3) {
+  animation-delay: 0.2s;
+}
+@keyframes wave {
+  0%,
+  100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.5);
+  }
+}
+
+.bouncing-dots {
+    display: flex;
+    gap: 0.25rem;
+  }
+  .bouncing-dots div {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: #3b82f6;
+    border-radius: 50%;
+    animation: bounce 0.6s infinite alternate;
+  }
+  .bouncing-dots div:nth-child(2) {
+    animation-delay: 0.2s;
+  }
+  .bouncing-dots div:nth-child(3) {
+    animation-delay: 0.4s;
+  }
+  @keyframes bounce {
+    0% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-0.5rem);
+    }
+  }
 
 .auth-body {
-    @apply min-h-screen w-full flex justify-center items-center 
+  @apply min-h-screen w-full flex justify-center items-center;
 }
 
 .container {
-    @apply p-4 xs:p-8 sm:p-16 md:p-4 lg:p-12 my-16 xs:mx-4 bg-light dark:bg-dark border-y xs:border border-primary xs:rounded-2xl xs:shadow-xl shadow-blue-shadow/10;
+  @apply p-4 xs:p-8 sm:p-16 md:p-4 lg:p-12 my-16 xs:mx-4 bg-light dark:bg-dark border-y xs:border border-primary xs:rounded-2xl xs:shadow-xl shadow-blue-shadow/10;
 }
 
 .head-1 {
-    @apply text-2xl xs:text-3xl sm:text-4xl font-semibold ;
+  @apply text-2xl xs:text-3xl sm:text-4xl font-semibold;
 }
 
 .head-2 {
-    @apply text-lg xs:text-xl font-medium
+  @apply text-lg xs:text-xl font-medium;
 }
 
 .head-3 {
-    @apply text-lg font-medium
+  @apply text-lg font-medium;
 }
 
 .input {
-    @apply border border-secondary/60 px-3 py-2 rounded-md bg-base-light dark:bg-base-light/10 outline-none 
+  @apply border border-secondary/60 px-3 py-2 rounded-md bg-base-light dark:bg-base-light/10 outline-none;
 }
 
 .input:focus {
-    @apply border border-secondary/100 dark:bg-base-light/5
+  @apply border border-secondary/100 dark:bg-base-light/5;
 }
 
 .submit-btn {
-    @apply max-w-fit sm:max-w-80 w-full bg-primary text-light px-4 py-2 rounded-md block mx-auto cursor-pointer hover:bg-primary-dark
+  @apply max-w-fit sm:max-w-80 w-full bg-primary text-light px-4 py-2 rounded-md block mx-auto cursor-pointer hover:bg-primary-dark;
 }
 
 .btn {
-    @apply w-fit bg-primary text-light px-4 py-2 rounded-md cursor-pointer hover:bg-primary-dark
+  @apply w-fit bg-primary text-light px-4 py-2 rounded-md cursor-pointer hover:bg-primary-dark;
 }
 .btn-1 {
-    @apply w-fit bg-secondary px-4 py-2 text-light rounded-xl cursor-pointer
+  @apply w-fit bg-secondary px-4 py-2 text-light rounded-xl cursor-pointer;
 }
 
 .hover-border {
-    @apply cursor-pointer hover:bg-primary/15 hover:dark:bg-primary/15 px-3 py-2 rounded-full border border-transparent hover:border-primary/50 hover:dark:border-primary/50 duration-300 transition-all
+  @apply cursor-pointer hover:bg-primary/15 hover:dark:bg-primary/15 px-3 py-2 rounded-full border border-transparent hover:border-primary/50 hover:dark:border-primary/50 duration-300 transition-all;
 }
 
 .container-2 {
-    @apply h-fit rounded-xl border p-8 flex flex-col gap-4
+  @apply h-fit rounded-xl border p-8 flex flex-col gap-4;
 }
 
 .card {
-    @apply bg-light dark:bg-dark hover:bg-primary/1 border border-primary/50 hover:border-primary p-6 rounded-2xl flex flex-col gap-2 cursor-pointer hover:shadow-md hover:shadow-blue-shadow/25
+  @apply bg-light dark:bg-dark hover:bg-primary/1 border border-primary/50 hover:border-primary p-6 rounded-2xl flex flex-col gap-2 cursor-pointer hover:shadow-md hover:shadow-blue-shadow/25;
 }
 
 .table-deco {
-    @apply p-2 border border-primary/50
+  @apply p-2 border border-primary/50;
 }

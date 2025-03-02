@@ -4,6 +4,7 @@ import { FaTimes } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 import api from "../../api";
 import { useNavigate, useParams } from "react-router";
+import { Loading } from "../../components";
 
 function EditProduct() {
   const { id } = useParams();
@@ -156,11 +157,7 @@ function EditProduct() {
 
   // Show loading spinner while fetching product data
   if (isPending) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
+    return <Loading />
   }
 
   return (
