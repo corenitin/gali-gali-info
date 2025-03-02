@@ -115,10 +115,10 @@ function Category() {
             <div className="flex-1 flex flex-col gap-1 text-sm">
               <div className="opacity-50">
                 <span>
-                  {organizations[product.user]?.city || "City not available"},
+                  {organizations[product.user]?.city || "-"},
                 </span>
                 <span>
-                  {organizations[product.user]?.state || "State not available"}
+                  {organizations[product.user]?.state || "-"}
                 </span>
               </div>
               <span className="self-end text-blue-900">
