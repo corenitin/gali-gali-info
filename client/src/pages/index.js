@@ -7,6 +7,7 @@ import PickUpRequests from "./Business/PickUpRequests";
 import Category from "./Category";
 import Dashboard from "./Dashboard";
 import Login from "./Login";
+import Product from "./Product";
 import Register from "./Register";
 import SelfPickUp from "./SelfPickUp";
 
@@ -22,4 +23,5 @@ export {
   AddProduct,
   EditProduct,
   Category,
+  Product,
 };

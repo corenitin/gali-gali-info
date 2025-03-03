@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import api from "../api";
 import { Loading } from "../components";
 import { FaStar } from "react-icons/fa6";
@@ -89,9 +89,10 @@ function Category() {
       {isPending && <Loading />}
       <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4">
         {products.map((product) => (
-          <li
+          <Link
             key={product._id}
-            className="w-fit flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 bg-light dark:bg-dark rounded-2xl"
+            to={`/dashboard/category/${product.category}/${product._id}`}
+            className="w-fit flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 bg-light dark:bg-dark rounded-2xl cursor-pointer hover:shadow-xl shadow-blue-shadow/15"
           >
             <img
               src={product.images[0]}
@@ -125,7 +126,7 @@ function Category() {
                 {getTimePassed(product.createdAt)}
               </span>
             </div>
-          </li>
+          </Link>
         ))}
       </ul>
     </div>
