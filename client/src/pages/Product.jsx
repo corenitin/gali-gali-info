@@ -8,31 +8,39 @@ import { IoLocationSharp, IoCloseCircle } from "react-icons/io5";
 
 function Product() {
   const { id } = useParams();
+
   const [isPending, setIsPending] = useState(false);
   const [product, setProduct] = useState(null);
   const [src, setSrc] = useState(null);
   const [user, setUser] = useState({});
+  const [reviews, setReviews] = useState([]);
+
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [rating, setRating] = useState(5);
+  const [rating, setRating] = useState(0);
+  const [text, setText] = useState("");
+  const [uploading, setUploading] = useState(false);
+  const [reviewError, setReviewError] = useState(null);
+  const [reviewSuccess, setReviewSuccess] = useState(null);
+  const [reviewUser, setReviewUser] = useState({});
   const rate = [1, 2, 3, 4, 5];
 
-  const reviews = [
-    {
-      user: {
-        profileImage:
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeKOOpLy92UjzQxq8NCxgxOQJbj_YVdfHO_g&s",
-        fullName: "Kirtan Patel",
-      },
-      text: "The taste is so good and restaurant is also very clean with hygiene.   ",
-    },
-    {
-      user: {
-        profileImage: "https://static.toiimg.com/photo/107091667/107091667.jpg",
-        fullName: "Kiton Patel",
-      },
-      text: `The taste is so bad! Don't go for it!`,
-    },
-  ];
+  // const reviews = [
+  //   {
+  //     user: {
+  //       profileImage:
+  //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeKOOpLy92UjzQxq8NCxgxOQJbj_YVdfHO_g&s",
+  //       fullName: "Kirtan Patel",
+  //     },
+  //     text: "The taste is so good and restaurant is also very clean with hygiene.   ",
+  //   },
+  //   {
+  //     user: {
+  //       profileImage: "https://static.toiimg.com/photo/107091667/107091667.jpg",
+  //       fullName: "Kiton Patel",
+  //     },
+  //     text: `The taste is so bad! Don't go for it!`,
+  //   },
+  // ];
 
   const fetchProduct = async () => {
     setIsPending(true);
@@ -41,7 +49,8 @@ function Product() {
       if (res.status === 200) {
         setProduct(res.data.data);
         setSrc(res.data.data.images[0]);
-        fetchUser(res.data.data.user);
+        setUser(await fetchUser(res.data.data.user));
+        fetchReviews(res.data.data._id);
       }
     } catch (error) {
       console.log(
@@ -53,24 +62,91 @@ function Product() {
     }
   };
 
-  console.log(product);
+  // console.log(product);
   const fetchUser = async (id) => {
-    setIsPending(true);
+    // console.log(id)
     try {
-      console.log(id);
       const res = await api.get(`/users/${id}`);
-      console.log(res);
       if (res.status === 200) {
-        console.log(res.data.data);
-        setUser(res?.data?.data);
+        // console.log(res.data.data);
+        return res?.data?.data;
       }
     } catch (error) {
       console.log(
         "Error while fetching products: ",
         error.response.data.message
       );
+      return {};
+    }
+  };
+
+  const fetchReviews = async (id) => {
+    console.log(id);
+    try {
+      const res = await api.get(`/reviews/${id}`);
+      if (res.status === 200) {
+        console.log(res.data.data);
+        setReviews(res.data.data);
+        fetchReviewUsers(res.data.data);
+      }
+    } catch (error) {
+      console.log(
+        "Error while fetching reviews: ",
+        error.response.data.message
+      );
+    }
+  };
+
+  const fetchReviewUsers = async (reviews) => {
+    let users = {};
+    try {
+      await Promise.all(
+        reviews.map(async (review) => {
+          const res = await api.get(`/users/${review.user}`);
+          if (res.status === 200) {
+            // console.log(res.data.data)
+            users[review.user] = {
+              profileImage: res.data.data.profileImage,
+              fullName: res.data.data.fullName,
+            };
+          }
+        })
+      );
+
+      setReviewUser(users);
+    } catch (error) {
+      console.log(
+        "Error while fetching review users: ",
+        error.response.data.message
+      );
+    }
+  };
+
+  // console.log(reviewUser)
+  console.log(reviews);
+  const handleReviewSubmit = async () => {
+    try {
+      setUploading(true);
+      const res = await api.post(
+        "reviews/add",
+        {
+          productId: id,
+          star: rating,
+          text,
+        },
+        { withCredentials: true }
+      );
+
+      if (res.status === 200) {
+        setReviewSuccess("Review added successfully!");
+        setDialogOpen((prev) => !prev);
+        fetchProduct();
+      }
+    } catch (error) {
+      console.log("Error while adding review: ", error);
+      setReviewError(error.response.data.message);
     } finally {
-      setIsPending(false);
+      setUploading(false);
     }
   };
 
@@ -84,13 +160,13 @@ function Product() {
     <div>
       {dialogOpen && (
         <div className="fixed inset-0 h-[calc(100vh-3.8rem)] w-screen bg-dark/25 dark:bg-light/25 flex justify-center items-center z-50">
-          <div className="relative w-11/12 md:w-96 h-96 bg-light dark:bg-dark rounded-2xl p-4 flex flex-col gap-4">
+          <div className="relative w-11/12 md:w-96 h-96 bg-light dark:bg-dark rounded-2xl p-4 flex flex-col items-center gap-4">
             <IoCloseCircle
               className="absolute right-1 top-1 cursor-pointer hover:text-red-600"
               size={24}
               onClick={() => setDialogOpen((prev) => !prev)}
             />
-            <div className="container-3 flex flex-col items-center bg-dark">
+            <div className="w-full container-3 flex flex-col items-center bg-dark">
               <span className="text-sm my-1">Rate the product: </span>
               <div className="h-px w-full bg-primary rounded-md"></div>
               <ul className="flex gap-3 items-center my-2">
@@ -113,7 +189,23 @@ function Product() {
             <textarea
               className="input h-full w-full"
               placeholder="Write a review..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
             />
+
+            {reviewError && (
+              <div className="bg-red-400/10 border border-red-500 text-red-400 px-4 py-2 rounded-md">
+                {reviewError}
+              </div>
+            )}
+
+            <button
+              className="btn"
+              disabled={uploading}
+              onClick={handleReviewSubmit}
+            >
+              {!uploading ? "Submit Review" : "Submitting..."}
+            </button>
           </div>
         </div>
       )}
@@ -185,7 +277,6 @@ function Product() {
             <iframe
               className="h-48 md:h-full w-full bg-lime-400 rounded-lg"
               loading="lazy"
-
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"
               src={`https://www.google.com/maps?q=${user?.businessAddress}&output=embed`}
@@ -226,23 +317,29 @@ function Product() {
             </button>
           </div>
           <ul className="p-2 space-y-4">
-            {reviews.map((review) => (
-              <li
-                key={review.id}
-                className="bg-base-light dark:bg-base-dark flex flex-col border border-secondary dark:border-secondary/75 rounded-2xl"
-              >
-                <div className="flex items-center gap-1 p-2">
-                  <img
-                    src={review.user.profileImage}
-                    alt={`profile_${review.user.fullName}`}
-                    className="h-8 w-8 rounded-full shadow-md object-cover"
-                  />
-                  <span className="font-semibold">{review.user.fullName}</span>
-                </div>
-                <div className="h-px w-full bg-secondary dark:bg-secondary/75"></div>
-                <span className="p-2">{review.text}</span>
-              </li>
-            ))}
+            {!reviews ? (
+              <span>No reviews found!</span>
+            ) : (
+              reviews?.map((review) => (
+                <li
+                  key={review.id}
+                  className="bg-base-light dark:bg-base-dark flex flex-col border border-secondary dark:border-secondary/75 rounded-2xl"
+                >
+                  <div className="flex items-center gap-1 p-2">
+                    <img
+                      src={reviewUser[review?.user].profileImage}
+                      alt={`profile_${reviewUser[review?.user].fullName}`}
+                      className="h-8 w-8 rounded-full shadow-md object-cover"
+                    />
+                    <span className="font-semibold">
+                      {reviewUser[review?.user].fullName}
+                    </span>
+                  </div>
+                  <div className="h-px w-full bg-secondary dark:bg-secondary/75"></div>
+                  <span className="p-2">{review.text}</span>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       </div>

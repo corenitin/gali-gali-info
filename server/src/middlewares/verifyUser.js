@@ -7,7 +7,7 @@ export const verifyJWT = asyncHandler(async(req, _, next) => {
     try {
         const token = req?.cookies?.gali_accessToken;
         if(!token) {
-            throw new ApiError(401, "Unauthorized request!");
+            throw new ApiError(401, "You need to login to access this feature!");
         }
 
         const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);

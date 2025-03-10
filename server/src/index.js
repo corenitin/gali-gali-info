@@ -2,6 +2,7 @@ import express from "express";
 import { config } from "dotenv";
 import userRouter from "./routes/user.route.js";
 import productRouter from './routes/product.route.js';
+import reviewRouter from './routes/review.routes.js';
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import {connectDB} from "./db/index.js";
@@ -34,6 +35,7 @@ connectDB(MONGO_URI);
 
 app.use("/api/users", userRouter);
 app.use("/api/business/products", productRouter);
+app.use("/api/reviews", reviewRouter);
 
 // app.get("/test-cors", (req, res) => {
 //     res.json({ message: "CORS is working!" });
