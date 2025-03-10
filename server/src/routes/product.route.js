@@ -6,7 +6,7 @@ const router = Router();
 
 router.route('/add').post(verifyJWT, addProduct);
 router.route('/').get(verifyJWT, getAll);
-router.route('/:id').get(verifyJWT, getById).put(verifyJWT, updateById).delete(verifyJWT, deleteProduct);
+router.route('/:id').get(getById).put(verifyJWT, updateById).delete(verifyJWT, deleteProduct);
 router.route('/c/:category').get(getAllProductsByCategory);
 
 export default router;

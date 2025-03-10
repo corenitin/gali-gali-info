@@ -95,7 +95,7 @@ function Dashboard() {
                           <img
                             src={item.images[0]}
                             alt={item.title}
-                            className="w-32 h-32 rounded-2xl"
+                            className="w-48 h-48 rounded-2xl object-cover"
                           />
                           <span className="text-sm xs:text-base">
                             {item.title}

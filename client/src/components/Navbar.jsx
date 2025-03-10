@@ -77,7 +77,7 @@ function Navbar() {
         </h1>
       </div>
 
-      <div className="w-full max-w-2xl xl:max-w-4xl justify-center bg-light dark:bg-dark shadow-lg pt-2 gap-4 hidden lg:flex">
+      <div className="w-full max-w-2xl xl:max-w-4xl justify-center bg-light dark:bg-dark pt-2 gap-4 hidden lg:flex">
         <input type="text" placeholder="Select Area" className="input mb-2" />
         <input type="text" placeholder="Search" className="input mb-2 w-full max-w-80 xl:max-w-md" />
       </div>
@@ -91,7 +91,7 @@ function Navbar() {
             className="flex items-center gap-1 rounded-full hover:bg-primary/15 px-1.5 py-1 border border-transparent hover:border-primary/15 cursor-pointer"
           >
             {user && user.photo ? (
-              <img src={user.photo} alt="" className="w-10 h-10 rounded-full" />
+              <img src={user.photo} alt="" className="w-10 h-10 rounded-full object-cover" />
             ) : (
               <DarkModeBtn />
             )}

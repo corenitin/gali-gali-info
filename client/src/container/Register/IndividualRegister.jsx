@@ -7,6 +7,7 @@ import axios from "axios";
 
 const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
 const cloud_name = import.meta.env.VITE_CLOUD_NAME;
+
 console.log(upload_preset, cloud_name);
 
 function IndividualRegister({ setRoleToggle }) {

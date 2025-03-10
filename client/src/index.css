@@ -176,3 +176,7 @@ body::-webkit-scrollbar-thumb:hover {
 .table-deco {
   @apply p-2 border border-primary/50;
 }
+
+.container-3 {
+  @apply bg-light dark:bg-dark p-4 border border-primary rounded-lg
+}
