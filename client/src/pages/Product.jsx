@@ -22,6 +22,7 @@ function Product() {
   const [reviewSuccess, setReviewSuccess] = useState(null);
   const [reviewUser, setReviewUser] = useState({});
   const [error, setError] = useState(null);
+  const rate = [1,2,3,4,5]
 
   const fetchProduct = async () => {
     setIsPending(true);
@@ -32,7 +33,8 @@ function Product() {
         setProduct(res.data.data);
         setSrc(res.data.data.images[0]);
         fetchUser(res.data.data.user);
-        await fetchReviewUsers(res?.data?.data?.reviews);
+        await fetchReviews(res.data.data._id)
+        // await fetchReviewUsers(res?.data?.data?.reviews);
       }
     } catch (error) {
       console.log(
@@ -55,18 +57,31 @@ function Product() {
     }
   };
 
+  const fetchReviews = async(id) => {
+    try {
+      const res = await api.get(`/reviews/product/${id}`)
+      if(res.status === 200) {
+        await fetchReviewUsers(res.data.data)
+        setReviews(res.data.data);
+      }
+    } catch (error) {
+      console.log(
+        "Error while fetching reviews: ",
+        error.response.data.message
+      );
+      setError("Failed to fetch reviews.");
+    }
+  }
   const fetchReviewUsers = async (reviews) => {
     let users = {};
     try {
       await Promise.all(
         reviews.map(async (review) => {
-          const reviewRes = await api.get(`/reviews/${review}`);
-          const res = await api.get(`/users/${reviewRes.data.data.user}`);
+          const res = await api.get(`/users/${review?.user}`);
           if (res.status === 200) {
             users[review.user] = {
               profileImage: res.data.data.profileImage,
               fullName: res.data.data.fullName,
-              text: reviewRes.data.data.text,
             };
           }
         })
@@ -80,10 +95,6 @@ function Product() {
       setError("Failed to fetch review users.");
     }
   };
-
-  useEffect(() => {
-    fetchProduct();
-  }, [id]);
 
   const handleReviewSubmit = async () => {
     try {
@@ -101,7 +112,7 @@ function Product() {
       if (res.status === 200) {
         setReviewSuccess("Review added successfully!");
         setDialogOpen((prev) => !prev);
-        fetchProduct();
+        await fetchProduct();
       }
     } catch (error) {
       console.log("Error while adding review: ", error);
@@ -181,7 +192,11 @@ function Product() {
         </div>
       )}
 
-      <div className="p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
+      <div>
+        <h2 className="text-xl font-bold mt-4 ml-4">Category | {product?.category} | {product?.title}</h2>
+      </div>
+
+      <div className="p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 overflow-y-hidden">
         {product && (
           <div className="flex flex-col xl:flex-row gap-4 w-full">
             <img
@@ -208,21 +223,21 @@ function Product() {
         <div className="container-3 h-full p-4">
           <div className="h-full grid xl:grid-rows-1 grid-rows-[auto_auto_1fr] grid-cols-1 xl:grid-cols-[1fr_auto_1fr] gap-4">
             <div className="pl-2 pt-2 flex flex-col gap-2">
-              <h2 className="head-2">Contact Details:</h2>
-              <div className="flex gap-1 items-center">
+              <h2 className="head-2 -ml-2">Contact Details:</h2>
+              <div className="flex gap-2 items-center">
                 <MdAlternateEmail className="text-primary" />
                 <span>{user?.email}</span>
               </div>
-              <div className="flex gap-1 items-center">
+              <div className="flex gap-2 items-center">
                 <FaPhoneFlip className="text-green-500" />
                 <span>{user?.phone}</span>
               </div>
-              <div className="flex gap-1 items-start">
+              <div className="flex gap-2 items-center">
                 <IoLocationSharp className="text-red-600 mt-1" size={20} />
                 <span>{user?.businessAddress}</span>
               </div>
 
-              <div className="border border-secondary bg-base-light dark:bg-base-dark p-2 rounded-2xl flex justify-between items-center">
+              <div className="border border-secondary bg-base-light dark:bg-base-dark p-2 rounded-2xl flex justify-between items-center mt-2">
                 <div className="flex items-center gap-2">
                   <img
                     src={user?.logo}
@@ -298,10 +313,10 @@ function Product() {
           {/* Overall Rating Section */}
 
           <ul className="p-2 space-y-4 max-h-96 h-full overflow-y-auto">
-            {!product?.reviews ? (
+            {!reviews ? (
               <span>No reviews found!</span>
             ) : (
-              product?.reviews?.map((review) => (
+              reviews?.map((review) => (
                 <li
                   key={review.id}
                   className="bg-base-light dark:bg-base-dark flex flex-col border border-secondary dark:border-secondary/75 rounded-2xl"
@@ -317,7 +332,7 @@ function Product() {
                     </span>
                   </div>
                   <div className="h-px w-full bg-secondary dark:bg-secondary/75"></div>
-                  <span className="p-2">{reviewUser[review?.user]?.text}</span>
+                  <span className="p-2">{review.text}</span>
                 </li>
               ))
             )}
