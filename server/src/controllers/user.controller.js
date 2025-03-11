@@ -72,31 +72,31 @@ const registerUser = asyncHandler(async (req, res) => {
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, phone, password } = req.body;
-  console.log(email, phone, password)
+  // console.log(email, phone, password)
   if((!email && !phone) || !password) {
-    console.log('in')
+    // console.log('in')
     throw new ApiError(400, "Please provide email or phone and password!");
   }
-  console.log('second')
-  console.log(typeof phone)
+  // console.log('second')
+  // console.log(typeof phone)
   const user = await User.findOne({ $or: [{ email }, { phone }] });
   if (!user) {
     throw new ApiError(404, "User doesn't exists with this credential!");
   }
-  console.log(user)
+  // console.log(user)
   const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) {
     throw new ApiError(404, "Invalid password!");
   }
-  console.log(isPasswordValid)
+  // console.log(isPasswordValid)
   const { accessToken, refreshToken } = await generateAccessAndRefreshTokens(
     user._id
   );
-  console.log('access')
+  // console.log('access')
   const loggedInUser = await User.findById(user._id).select(
     "-password -refreshToken"
   );
-  console.log(loggedInUser)
+  // console.log(loggedInUser)
   return res
     .status(200)
     .cookie("gali_accessToken", accessToken, options)

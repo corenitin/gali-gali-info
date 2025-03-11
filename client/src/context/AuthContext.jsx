@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
         return storedUser ? JSON.parse(storedUser) : null;
     });
     const [ sidebarOpen, setSidebarOpen ] = useState(false);
+    const theme = localStorage.getItem('theme');
 
     useEffect(() => {
         if (user) {
@@ -18,7 +19,7 @@ export const AuthProvider = ({ children }) => {
     }, [user]);
 
     const login = (userData) => {
-        console.log(userData)
+        // console.log(userData)
         setUser(userData);
         localStorage.setItem("user", JSON.stringify(userData));
     };

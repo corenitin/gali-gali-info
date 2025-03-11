@@ -19,7 +19,7 @@ const getAllReviewsByProduct = asyncHandler(async (req, res) => {
     throw new ApiError(404, "No reviews found this product!");
   }
 
-  console.log(reviews)
+  // console.log(reviews)
   return res
     .status(200)
     .json(new ApiResponse(200, reviews, "Reviews fetched successfully."));
@@ -28,7 +28,7 @@ const getAllReviewsByProduct = asyncHandler(async (req, res) => {
 const addReview = asyncHandler(async (req, res) => {
   const { productId, star, text } = req.body;
 
-  console.log(productId, star, text)
+  // console.log(productId, star, text)
   if (!productId || !text) {
     throw new ApiError(409, "All fields are required!");
   }
@@ -64,7 +64,7 @@ const addReview = asyncHandler(async (req, res) => {
   item.reviews.push(review?._id);
 
   const totalReviews = reviews.length;
-  console.log(totalReviews)
+  // console.log(totalReviews)
   let allReviews = [];
   for (const reviewId of item.reviews) {
     const review = await Review.findById(reviewId);
@@ -73,9 +73,9 @@ const addReview = asyncHandler(async (req, res) => {
 
 //   console.log(allReviews);
   const totalStars = allReviews.reduce((sum, review) => sum + review.star, 0);
-  console.log(totalStars);
+  // console.log(totalStars);
   const newOverallRating = totalStars / totalReviews;
-  console.log(newOverallRating)
+  // console.log(newOverallRating)
 
   item.overallRating = newOverallRating;
   item.save();

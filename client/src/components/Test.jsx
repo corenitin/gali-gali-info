@@ -8,7 +8,7 @@ function Test() {
   const handleClick = async (e) => {
     try {
       const res = await api.post("/users", { username });
-      console.log(res.data);
+      // console.log(res.data);
       setResult(res.data.message);
     } catch (error) {
       console.error("Error posting data:", error);

@@ -313,7 +313,7 @@ function Product() {
           {/* Overall Rating Section */}
 
           <ul className="p-2 space-y-4 max-h-96 h-full overflow-y-auto">
-            {!reviews ? (
+            {reviews.length === 0 ? (
               <span>No reviews found!</span>
             ) : (
               reviews?.map((review) => (

@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FiMenu } from "react-icons/fi"; // Hamburger icon
-import { IoClose } from "react-icons/io5"; // Close icon
+import { IoClose, IoSearchCircle, IoCloseCircle } from "react-icons/io5"; // Close icon
 import DarkModeBtn from "./DarkModeBtn";
-import gali_logo from "../assets/gali-logo.png";
+import gali_logo_dark from "../assets/loc_round_dark.svg";
+import gali_logo_light from "../assets/loc_round_light.svg";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import api from "../api";
+import { MdLocationOn } from "react-icons/md";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -13,6 +15,8 @@ function Navbar() {
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { user, logout, sidebarToggle } = useAuth();
+  const theme = localStorage.getItem("theme");
+  // console.log(theme);
 
   // Toggle Profile Dropdown
   const toggleDropdown = () => {
@@ -56,30 +60,50 @@ function Navbar() {
       {user && (
         <button
           onClick={toggleMobileMenu}
-          className="lg:hidden text-2xl p-2 rounded-md bg-gray-200 dark:bg-primary-dark"
+          className="lg:hidden text-2xl rounded-md bg-gray-200 dark:bg-primary-dark"
         >
-          {isMobileMenuOpen ? <IoClose /> : <FiMenu />}
+          {isMobileMenuOpen ? (
+            <IoCloseCircle size={32} />
+          ) : (
+            <IoSearchCircle size={32} />
+          )}
         </button>
       )}
 
       {/* Website Name & Logo */}
-      <div className="flex-1 flex items-center justify-center lg:justify-start gap-2">
+      <Link 
+      to={'/'}
+      className="flex-1 flex items-center justify-center lg:justify-start gap-2">
         <img
-          src={gali_logo}
+          src={theme === "dark" ? gali_logo_dark : gali_logo_light}
           alt="Logo"
-          className="bg-secondary rounded-full w-12 h-12 hidden sm:flex"
+          className="w-12 h-12 hidden sm:flex"
         />
-        <h1 className="text-dark dark:text-light text-3xl font-bold sm:flex hidden">
-          Gali Gali Info
+        <h1 className="text-dark dark:text-light text-xl lg:text-2xl xl:text-3xl font-bold sm:flex items-center tracking-wider hidden">
+          <div className="text-secondary flex">
+            <div className="-rotate-12 ">G</div>
+            <span>ali</span>
+          </div>
+          <div className="text-primary flex">
+            <div className="rotate-12 ">G</div>
+
+            <span>ali</span>
+          </div>
+          <MdLocationOn className="text-red-600 -mx-1" />
+          <span>nfo</span>
         </h1>
-        <h1 className="text-dark dark:text-light text-xl font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
+        <h1 className="text-dark dark:text-light font-bold sm:hidden absolute left-1/2 transform -translate-x-1/2">
           GaliGaliInfo
         </h1>
-      </div>
+      </Link>
 
-      <div className="w-full max-w-2xl xl:max-w-4xl justify-center bg-light dark:bg-dark pt-2 gap-4 hidden lg:flex">
-        <input type="text" placeholder="Select Area" className="input mb-2" />
-        <input type="text" placeholder="Search" className="input mb-2 w-full max-w-80 xl:max-w-md" />
+      <div className="max-w-2xl xl:max-w-4xl justify-center bg-light dark:bg-dark gap-4 hidden lg:flex">
+        <input type="text" placeholder="Select Area" className="input" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="input w-80 xl:w-96"
+        />
       </div>
 
       {/* Right Side: Profile & Mobile Menu */}
@@ -91,7 +115,11 @@ function Navbar() {
             className="flex items-center gap-1 rounded-full hover:bg-primary/15 px-1.5 py-1 border border-transparent hover:border-primary/15 cursor-pointer"
           >
             {user && user.photo ? (
-              <img src={user.photo} alt="" className="w-10 h-10 rounded-full object-cover" />
+              <img
+                src={user.photo}
+                alt=""
+                className="w-10 h-10 rounded-full object-cover"
+              />
             ) : (
               <DarkModeBtn />
             )}
@@ -133,9 +161,9 @@ function Navbar() {
 
       {/* Mobile Dropdown Menu */}
       {isMobileMenuOpen && (
-        <div className="absolute top-14 left-0 w-full bg-light dark:bg-dark shadow-lg p-4 flex flex-col xs:flex-row gap-4 lg:hidden">
-          <input type="text" placeholder="Select Area" className="input mb-2" />
-          <input type="text" placeholder="Search" className="input mb-2 w-full max-w-md" />
+        <div className="absolute top-14 left-0 w-full bg-light dark:bg-dark shadow-lg p-2 flex flex-col xs:flex-row gap-4 lg:hidden">
+          <input type="text" placeholder="Select Area" className="input" />
+          <input type="text" placeholder="Search" className="input w-full" />
         </div>
       )}
     </nav>

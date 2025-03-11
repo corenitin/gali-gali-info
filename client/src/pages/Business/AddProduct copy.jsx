@@ -163,7 +163,7 @@ function AddProduct() {
       return;
     }
     setOfferError("");
-    console.log("Submitting offers:", offers);
+    // console.log("Submitting offers:", offers);
   };
   // Form Submission
   const handleSubmit = async (e) => {
@@ -188,7 +188,7 @@ function AddProduct() {
 
     try {
       const response = await api.post("/business/products/add", productData);
-      console.log("Response:", response.data);
+      // console.log("Response:", response.data);
     } catch (err) {
       setError("Something went wrong. Please try again.");
     } finally {

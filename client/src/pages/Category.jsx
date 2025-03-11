@@ -87,19 +87,19 @@ function Category() {
         Category | {name.charAt(0).toUpperCase() + name.slice(1)}
       </h2>
       {isPending && <Loading />}
-      <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4">
+      <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4 justify-items-center">
         {products.map((product) => (
           <Link
             key={product._id}
             to={`/dashboard/category/${product.category}/${product._id}`}
-            className="w-fit flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 bg-light dark:bg-dark rounded-2xl cursor-pointer hover:shadow-xl shadow-blue-shadow/15"
+            className="w-fit flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 bg-light dark:bg-dark rounded-2xl cursor-pointer border border-primary/20 shadow-xl shadow-blue-shadow/5 hover:shadow-blue-shadow/15"
           >
             <img
               src={product.images[0]}
               alt={product.title}
-              className="w-40 xs:w-full h-28 rounded-2xl object-cover"
+              className="w-full max-w-56 h-40 rounded-2xl object-cover"
             />
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center gap-2">
               <div>
                 <h3 className="head-3">{product.title}</h3>
                 <span className="text-sm">

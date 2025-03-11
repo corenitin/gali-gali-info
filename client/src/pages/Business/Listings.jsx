@@ -66,7 +66,7 @@ function Listings() {
     try {
       const res = await api.get("/business/products");
       if (res.status === 200) {
-        console.log(res.data.data);
+        // console.log(res.data.data);
         setProducts(res.data.data);
       }
     } catch (error) {
@@ -94,7 +94,7 @@ function Listings() {
     }
   };
 
-  console.log(products);
+  // console.log(products);
   const navigate = useNavigate();
 
   return (

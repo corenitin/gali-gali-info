@@ -101,7 +101,7 @@ function AddProduct() {
     setIsSubmitting(true);
     setApiError("");
 
-    console.log("come");
+    // console.log("come");
 
     let email = "",
       category = "";
@@ -111,7 +111,7 @@ function AddProduct() {
       category = user.category;
     }
 
-    console.log(category);
+    // console.log(category);
 
     const formData = {
       email,
@@ -125,7 +125,7 @@ function AddProduct() {
       offers,
     };
 
-    console.log(formData);
+    // console.log(formData);
 
     try {
       const response = await api.post("/business/products/add", formData);
