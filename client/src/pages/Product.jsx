@@ -31,9 +31,8 @@ function Product() {
       if (res.status === 200) {
         setProduct(res.data.data);
         setSrc(res.data.data.images[0]);
-        const userData = await fetchUser(res.data.data.user);
-        setUser(userData);
-        await fetchReviews(res.data.data._id);
+        fetchUser(res.data.data.user);
+        await fetchReviewUsers(res?.data?.data?.reviews);
       }
     } catch (error) {
       console.log(
@@ -49,29 +48,10 @@ function Product() {
   const fetchUser = async (id) => {
     try {
       const res = await api.get(`/users/${id}`);
-      if (res.status === 200) {
-        return res?.data?.data;
-      }
+      setUser(res.data.data);
     } catch (error) {
       console.log("Error while fetching user: ", error.response.data.message);
-      setError("Failed to fetch user data.");
-      return {};
-    }
-  };
-
-  const fetchReviews = async (id) => {
-    try {
-      const res = await api.get(`/reviews/${id}`);
-      if (res.status === 200) {
-        setReviews(res.data.data);
-        await fetchReviewUsers(res.data.data);
-      }
-    } catch (error) {
-      console.log(
-        "Error while fetching reviews: ",
-        error.response.data.message
-      );
-      setError("Failed to fetch reviews.");
+      setError("Failed to fetch user!");
     }
   };
 
@@ -80,11 +60,13 @@ function Product() {
     try {
       await Promise.all(
         reviews.map(async (review) => {
-          const res = await api.get(`/users/${review.user}`);
+          const reviewRes = await api.get(`/reviews/${review}`);
+          const res = await api.get(`/users/${reviewRes.data.data.user}`);
           if (res.status === 200) {
             users[review.user] = {
               profileImage: res.data.data.profileImage,
               fullName: res.data.data.fullName,
+              text: reviewRes.data.data.text,
             };
           }
         })
@@ -103,8 +85,6 @@ function Product() {
     fetchProduct();
   }, [id]);
 
-  // console.log(reviewUser)
-  console.log(reviews);
   const handleReviewSubmit = async () => {
     try {
       setUploading(true);
@@ -299,7 +279,14 @@ function Product() {
 
         <div className="container-3 p-4">
           <div className="flex justify-between">
-            <h2 className="head-2">Reviews:</h2>
+            <div className="flex items-center gap-2 p-2">
+              <h2 className="head-2">Rating:</h2>
+              <FaStar className="text-secondary" /> {/* Star Icon */}
+              <span className="text-secondary font-semibold">
+                {product?.overallRating?.toFixed(1) || "0.0"}{" "}
+                {/* Display overallRating with 1 decimal place */}
+              </span>
+            </div>
             <button
               className="btn"
               onClick={() => setDialogOpen((prev) => !prev)}
@@ -307,11 +294,14 @@ function Product() {
               Add+
             </button>
           </div>
-          <ul className="p-2 space-y-4">
-            {!reviews ? (
+
+          {/* Overall Rating Section */}
+
+          <ul className="p-2 space-y-4 max-h-96 h-full overflow-y-auto">
+            {!product?.reviews ? (
               <span>No reviews found!</span>
             ) : (
-              reviews?.map((review) => (
+              product?.reviews?.map((review) => (
                 <li
                   key={review.id}
                   className="bg-base-light dark:bg-base-dark flex flex-col border border-secondary dark:border-secondary/75 rounded-2xl"
@@ -327,7 +317,7 @@ function Product() {
                     </span>
                   </div>
                   <div className="h-px w-full bg-secondary dark:bg-secondary/75"></div>
-                  <span className="p-2">{review.text}</span>
+                  <span className="p-2">{reviewUser[review?.user]?.text}</span>
                 </li>
               ))
             )}

@@ -97,7 +97,7 @@ function Category() {
             <img
               src={product.images[0]}
               alt={product.title}
-              className="w-40 ull h-28 rounded-2xl object-cover"
+              className="w-40 xs:w-full h-28 rounded-2xl object-cover"
             />
             <div className="flex justify-between items-center">
               <div>
@@ -109,7 +109,7 @@ function Category() {
               </div>
               <div className="flex flex-col items-center justify-center border border-secondary rounded-2xl px-2 xs:px-4 py-1 xs:py-2">
                 <FaStar className="text-secondary" />
-                <span>4.5</span>
+                <span>{product.overallRating.toFixed(1)}</span>
               </div>
             </div>
             <div className="h-px w-full bg-dark/10 dark:bg-light/10"></div>

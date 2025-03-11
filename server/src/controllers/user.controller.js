@@ -2,6 +2,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User, Individual, Business } from "../models/user.model.js";
+import mongoose from "mongoose";
 
 const options = {
   httpOnly: true,
@@ -134,11 +135,15 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const getUserById = asyncHandler(async(req, res) => {
-  const { id } = req.params;
+  let { id } = req.params;
   if(!id) {
     throw new ApiError(409, "User id required!")
   }
 
+  if(typeof id === 'string') {
+    id = new mongoose.Types.ObjectId(id)
+  }
+  // console.log(id)
   const user = await User.findById(id).select(
     "-password -refreshToken"
   );;
