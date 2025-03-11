@@ -14,7 +14,6 @@ function Product() {
   const [src, setSrc] = useState(null);
   const [user, setUser] = useState({});
   const [reviews, setReviews] = useState([]);
-
   const [dialogOpen, setDialogOpen] = useState(false);
   const [rating, setRating] = useState(0);
   const [text, setText] = useState("");
@@ -22,78 +21,57 @@ function Product() {
   const [reviewError, setReviewError] = useState(null);
   const [reviewSuccess, setReviewSuccess] = useState(null);
   const [reviewUser, setReviewUser] = useState({});
-  const rate = [1, 2, 3, 4, 5];
-
-  // const reviews = [
-  //   {
-  //     user: {
-  //       profileImage:
-  //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTeKOOpLy92UjzQxq8NCxgxOQJbj_YVdfHO_g&s",
-  //       fullName: "Kirtan Patel",
-  //     },
-  //     text: "The taste is so good and restaurant is also very clean with hygiene.   ",
-  //   },
-  //   {
-  //     user: {
-  //       profileImage: "https://static.toiimg.com/photo/107091667/107091667.jpg",
-  //       fullName: "Kiton Patel",
-  //     },
-  //     text: `The taste is so bad! Don't go for it!`,
-  //   },
-  // ];
+  const [error, setError] = useState(null);
 
   const fetchProduct = async () => {
     setIsPending(true);
+    setError(null);
     try {
       const res = await api.get(`/business/products/${id}`);
       if (res.status === 200) {
         setProduct(res.data.data);
         setSrc(res.data.data.images[0]);
-        setUser(await fetchUser(res.data.data.user));
-        fetchReviews(res.data.data._id);
-      }
-    } catch (error) {
-      console.log(
-        "Error while fetching products ",
-        error.response.data.message
-      );
-    } finally {
-      setIsPending(false);
-    }
-  };
-
-  // console.log(product);
-  const fetchUser = async (id) => {
-    // console.log(id)
-    try {
-      const res = await api.get(`/users/${id}`);
-      if (res.status === 200) {
-        // console.log(res.data.data);
-        return res?.data?.data;
+        const userData = await fetchUser(res.data.data.user);
+        setUser(userData);
+        await fetchReviews(res.data.data._id);
       }
     } catch (error) {
       console.log(
         "Error while fetching products: ",
         error.response.data.message
       );
+      setError("Failed to fetch product data.");
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  const fetchUser = async (id) => {
+    try {
+      const res = await api.get(`/users/${id}`);
+      if (res.status === 200) {
+        return res?.data?.data;
+      }
+    } catch (error) {
+      console.log("Error while fetching user: ", error.response.data.message);
+      setError("Failed to fetch user data.");
       return {};
     }
   };
 
   const fetchReviews = async (id) => {
-    console.log(id);
     try {
       const res = await api.get(`/reviews/${id}`);
       if (res.status === 200) {
-        console.log(res.data.data);
         setReviews(res.data.data);
-        fetchReviewUsers(res.data.data);
+        await fetchReviewUsers(res.data.data);
       }
     } catch (error) {
       console.log(
         "Error while fetching reviews: ",
         error.response.data.message
       );
+      setError("Failed to fetch reviews.");
     }
   };
 
@@ -104,7 +82,6 @@ function Product() {
         reviews.map(async (review) => {
           const res = await api.get(`/users/${review.user}`);
           if (res.status === 200) {
-            // console.log(res.data.data)
             users[review.user] = {
               profileImage: res.data.data.profileImage,
               fullName: res.data.data.fullName,
@@ -112,15 +89,19 @@ function Product() {
           }
         })
       );
-
       setReviewUser(users);
     } catch (error) {
       console.log(
         "Error while fetching review users: ",
         error.response.data.message
       );
+      setError("Failed to fetch review users.");
     }
   };
+
+  useEffect(() => {
+    fetchProduct();
+  }, [id]);
 
   // console.log(reviewUser)
   console.log(reviews);
@@ -152,7 +133,17 @@ function Product() {
 
   useEffect(() => {
     fetchProduct();
-  }, []);
+  }, [id]);
+
+  if (error) {
+    return (
+      <div className="p-4 md:p-8">
+        <div className="container-3 p-4 text-center">
+          <span className="text-red-500">{error}</span>
+        </div>
+      </div>
+    );
+  }
 
   if (isPending) return <Loading />;
 
@@ -327,12 +318,12 @@ function Product() {
                 >
                   <div className="flex items-center gap-1 p-2">
                     <img
-                      src={reviewUser[review?.user].profileImage}
-                      alt={`profile_${reviewUser[review?.user].fullName}`}
+                      src={reviewUser[review?.user]?.profileImage}
+                      alt={`profile_${reviewUser[review?.user]?.fullName}`}
                       className="h-8 w-8 rounded-full shadow-md object-cover"
                     />
                     <span className="font-semibold">
-                      {reviewUser[review?.user].fullName}
+                      {reviewUser[review?.user]?.fullName}
                     </span>
                   </div>
                   <div className="h-px w-full bg-secondary dark:bg-secondary/75"></div>
