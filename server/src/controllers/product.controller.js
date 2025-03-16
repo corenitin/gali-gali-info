@@ -22,8 +22,7 @@ const addProduct = asyncHandler(async (req, res) => {
     offers,
   } = req.body;
 
-  console.log(req.body)
-  // console.log(6)
+  console.log(6)
   if (
     !email ||
     !category ||
@@ -41,10 +40,9 @@ const addProduct = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(404, "User not found for given email!");
   }
-  console.log(user)
   const userId = user._id;
 
-  console.log(userId)
+  console.log(availableQuantity)
   const product = await Product.create({
     user: userId,
     category,
@@ -60,8 +58,6 @@ const addProduct = asyncHandler(async (req, res) => {
     offers,
   });
 
-  console.log(product)
-
   return res.status(200).json(
     new ApiResponse(
       201,
@@ -75,7 +71,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const getAll = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  // console.log(5)
+  console.log(5)
   if (!userId) {
     throw new ApiError(404, "User id not found");
   }
@@ -93,7 +89,7 @@ const getAll = asyncHandler(async (req, res) => {
 const getById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // console.log(4)
+  console.log(4)
   const productId = new mongoose.Types.ObjectId(id);
   if (!productId) {
     throw new ApiError(404, "Product id not found");
@@ -103,7 +99,6 @@ const getById = asyncHandler(async (req, res) => {
   if (!product) {
     throw new ApiError(404, "Product not found");
   }
-
   return res
     .status(200)
     .json(new ApiResponse(200, product, "Product fetched successfully!"));
@@ -112,7 +107,7 @@ const getById = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  // console.log(3)
+  console.log(3)
   const productId = new mongoose.Types.ObjectId(id);
   if (!productId) {
     throw new ApiError(404, "Product id not found");
@@ -132,7 +127,8 @@ const updateById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = req.body;
 
-  // console.log('2')
+  console.log(product)
+  console.log('2')
   if (!id) {
     throw new ApiError(409, "Product id not given!");
   }
@@ -159,7 +155,7 @@ const updateById = asyncHandler(async (req, res) => {
 
 const getAllProductsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
-  // console.log('1')
+  console.log('1')
   if (!category) {
     throw new ApiError(409, "Category required!");
   }
@@ -181,7 +177,8 @@ const getAllProductsByCategory = asyncHandler(async (req, res) => {
 
 const fetchShopsByPincode = asyncHandler(async (req, res) => {
   const { pincode } = req.params;
-  // console.log(pincode);
+  console.log(pincode)
+  console.log(0);
 
   const shops = await User.find({ pincode, role: "business" });
   if (!shops) {
@@ -220,6 +217,7 @@ const fetchShopsByPincode = asyncHandler(async (req, res) => {
 });
 
 const getByShopId = asyncHandler(async (req, res) => {
+    console.log(-1)
   const { id } = req.params;
   if (!id) {
     throw new ApiError(409, "Shop id required!");

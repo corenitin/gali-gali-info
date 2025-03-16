@@ -55,7 +55,7 @@ function SelfPickUp() {
 
   const fetchShopsByPincode = async () => {
     try {
-      const res = await api.get(`/business/products/${pincode}`);
+      const res = await api.get(`/business/products/pin/${pincode}`);
       setShops(res.data.data);
       console.log(res.data.data);
     } catch (error) {

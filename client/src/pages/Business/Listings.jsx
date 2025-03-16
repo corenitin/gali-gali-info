@@ -164,7 +164,7 @@ function Listings() {
                             <span className="truncate">{product.title}</span>
                           </td>
                           <td className="table-deco">
-                            {product.quantity} {product.qtyUnit}
+                            {product.availableQuantity} {product.quanityUnit}
                           </td>
                           <td className="table-deco">0</td>
                           <td className="table-deco flex-1 justify-items-center">
