@@ -22,7 +22,7 @@ const addProduct = asyncHandler(async (req, res) => {
     offers,
   } = req.body;
 
-  console.log(6)
+  // console.log(6)
   if (
     !email ||
     !category ||
@@ -42,7 +42,6 @@ const addProduct = asyncHandler(async (req, res) => {
   }
   const userId = user._id;
 
-  console.log(availableQuantity)
   const product = await Product.create({
     user: userId,
     category,
@@ -71,7 +70,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const getAll = asyncHandler(async (req, res) => {
   const userId = req.user?._id;
-  console.log(5)
+  // console.log(5)
   if (!userId) {
     throw new ApiError(404, "User id not found");
   }
@@ -89,7 +88,7 @@ const getAll = asyncHandler(async (req, res) => {
 const getById = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  console.log(4)
+  // console.log(4)
   const productId = new mongoose.Types.ObjectId(id);
   if (!productId) {
     throw new ApiError(404, "Product id not found");
@@ -107,7 +106,7 @@ const getById = asyncHandler(async (req, res) => {
 const deleteProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
-  console.log(3)
+  // console.log(3)
   const productId = new mongoose.Types.ObjectId(id);
   if (!productId) {
     throw new ApiError(404, "Product id not found");
@@ -127,8 +126,7 @@ const updateById = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const product = req.body;
 
-  console.log(product)
-  console.log('2')
+  // console.log('2')
   if (!id) {
     throw new ApiError(409, "Product id not given!");
   }
@@ -155,10 +153,11 @@ const updateById = asyncHandler(async (req, res) => {
 
 const getAllProductsByCategory = asyncHandler(async (req, res) => {
   const { category } = req.params;
-  console.log('1')
+  // console.log('1')
   if (!category) {
     throw new ApiError(409, "Category required!");
   }
+
   const products = await Product.find({ category });
   if (!products) {
     throw new ApiError(404, `Products not found for ${category}!`);
@@ -177,8 +176,7 @@ const getAllProductsByCategory = asyncHandler(async (req, res) => {
 
 const fetchShopsByPincode = asyncHandler(async (req, res) => {
   const { pincode } = req.params;
-  console.log(pincode)
-  console.log(0);
+  // console.log(0);
 
   const shops = await User.find({ pincode, role: "business" });
   if (!shops) {

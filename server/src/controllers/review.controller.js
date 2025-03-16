@@ -7,19 +7,16 @@ import { Product } from "../models/product.model.js";
 
 const getAllReviewsByProduct = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  // console.log(id)
   if (!id) {
     throw new ApiError(409, "Product id is required!");
   }
 
   const productId = new mongoose.Types.ObjectId(id);
-  // console.log(productId)
   const reviews = await Review.find({ product: productId });
   if (!reviews) {
     throw new ApiError(404, "No reviews found this product!");
   }
 
-  // console.log(reviews)
   return res
     .status(200)
     .json(new ApiResponse(200, reviews, "Reviews fetched successfully."));
@@ -28,7 +25,6 @@ const getAllReviewsByProduct = asyncHandler(async (req, res) => {
 const addReview = asyncHandler(async (req, res) => {
   const { productId, star, text } = req.body;
 
-  // console.log(productId, star, text)
   if (!productId || !text) {
     throw new ApiError(409, "All fields are required!");
   }
@@ -37,7 +33,6 @@ const addReview = asyncHandler(async (req, res) => {
   if (!user) {
     throw new ApiError(401, "You need to login to access this feature!");
   }
-  // console.log(user)
 
   const product = new mongoose.Types.ObjectId(productId);
   if (!product) {
@@ -64,23 +59,17 @@ const addReview = asyncHandler(async (req, res) => {
   item.reviews.push(review?._id);
 
   const totalReviews = reviews.length;
-  // console.log(totalReviews)
   let allReviews = [];
   for (const reviewId of item.reviews) {
     const review = await Review.findById(reviewId);
     allReviews.push(review);
   }
 
-//   console.log(allReviews);
   const totalStars = allReviews.reduce((sum, review) => sum + review.star, 0);
-  // console.log(totalStars);
   const newOverallRating = totalStars / totalReviews;
-  // console.log(newOverallRating)
 
   item.overallRating = newOverallRating;
   item.save();
-
-  // console.log(review._id)
 
   return res
     .status(200)
