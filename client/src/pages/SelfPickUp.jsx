@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import api from "../api.js";
 import { Link } from "react-router";
 import Loading from "../components/Loading.jsx";
-import { IoLocation } from "react-icons/io5";
 import { MdLocationPin } from "react-icons/md";
 
 function SelfPickUp() {
@@ -54,7 +53,7 @@ function SelfPickUp() {
     }
   };
 
-  const fetchProductsByPincode = async () => {
+  const fetchShopsByPincode = async () => {
     try {
       const res = await api.get(`/business/products/${pincode}`);
       setShops(res.data.data);
@@ -75,7 +74,7 @@ function SelfPickUp() {
 
   useEffect(() => {
     if (pincode) {
-      fetchProductsByPincode();
+      fetchShopsByPincode();
     }
   }, [pincode]);
 
