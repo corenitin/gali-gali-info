@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import api from "../api";
 import Loading from "../components/Loading";
 import { IoLocationSharp } from "react-icons/io5";
@@ -42,7 +42,7 @@ function Shops() {
 
   return (
     <div className="p-4 flex justify-center">
-      <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl flex flex-col">
         <h2 className="head-1">{shop.organization_name}</h2>
         <div className="container-3 p-2 xs:p-4 sm:m-4 h-full flex flex-col md:flex-row gap-4">
           <div className="pl-2 pt-2 flex flex-col gap-2">
@@ -72,7 +72,7 @@ function Shops() {
           </div>
           <div className="bg-secondary w-full md:w-px h-px md:h-full rounded-md hidden md:block"></div>
           <iframe
-            className="h-48 md:h-full w-full bg-lime-400 rounded-lg"
+            className="h-48 md:h-full w-full bg-slate-200 rounded-lg"
             loading="lazy"
             allowFullScreen
             referrerPolicy="no-referrer-when-downgrade"
@@ -90,9 +90,62 @@ function Shops() {
           ></iframe>
         </div>
 
-        <section>
-            <h2 className="head-2">All products from {shop?.organization_name}:</h2>
-            
+        <section className="sm:m-4">
+          <h2 className="head-2 m-2 sm:m-4">
+            All products from {shop?.organization_name}:
+          </h2>
+          <div className="grid grid-cols-[1fr_auto] gap-4">
+            <ul className="container-3 grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-4 sm:gap-8 p-4 sm:p-8">
+              {products.map((product) => (
+                <li className="flex flex-col gap-2 sm:gap-4 p-2 sm:p-4 w-full max-w-96 bg-slate-200/30 hover:bg-slate-300/50 dark:bg-slate-400/10 dark:hover:bg-slate-400/20 rounded-xl border border-slate-500/40 hover:border-transparent hover:shadow-md hover:shadow-slate-400/35 dark:hover:shadow-slate-950 dark:border-slate-600/50 dark:hover:border-transparent">
+                  <Link
+                    to={`/dashboard/category/${product?.category}/${product?._id}`}
+                    className="w-full flex justify-between"
+                  >
+                    <div className="flex flex-col">
+                      <span className="font-medium">{product?.title}</span>
+                      <span className="opacity-60">
+                        {product?.price}rs per {product?.priceQuanity}{" "}
+                        {product?.quanityUnit}
+                      </span>
+                    </div>
+                    <img
+                      src={product.images[0]}
+                      alt={product?.title}
+                      className="h-16 w-16 rounded-md object-cover"
+                    />
+                  </Link>
+                  <hr className="border-slate-300 dark:border-slate-600 rounded" />
+                  <div className="flex flex-col gap-2">
+                    <label className="text-sm opacity-35">
+                      Select Quantity ({product?.quanityUnit})
+                    </label>
+                    <input
+                      type="number"
+                      className="input text-base max-w-40"
+                      name="reqQuantity"
+                      placeholder="Enter quantity..."
+                    />
+                    <label
+                      className={`ml-2 ${
+                        product?.availableQuantity > 0
+                          ? "text-green-600"
+                          : "text-red-600"
+                      }`}
+                    >
+                      
+                      {product?.availableQuantity > 0
+                        ? "Available: " + product?.availableQuantity
+                        : "Out of stock!"}
+                    </label>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className="container-3 w-full max-w-xl bg-base-light/10 p-4">
+              Selected products
+            </div>
+          </div>
         </section>
       </div>
     </div>

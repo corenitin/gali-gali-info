@@ -215,7 +215,6 @@ const fetchShopsByPincode = asyncHandler(async (req, res) => {
 });
 
 const getByShopId = asyncHandler(async (req, res) => {
-    console.log(-1)
   const { id } = req.params;
   if (!id) {
     throw new ApiError(409, "Shop id required!");
@@ -238,6 +237,7 @@ const getByShopId = asyncHandler(async (req, res) => {
       )
     );
 });
+
 export {
   addProduct,
   getAll,
