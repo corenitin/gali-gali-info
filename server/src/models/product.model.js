@@ -25,13 +25,23 @@ const productSchema = new Schema({
         type: Number,
         required: true,
     }, 
-    quantity: {
+    // quantity: {
+    //     type: Number,
+    //     required: true,
+    // },
+    // qtyUnit: {
+    //     type: String,
+    //     required: true
+    // },
+    priceQuanity: {
         type: Number,
-        required: true,
     },
-    qtyUnit: {
+    quanityUnit: {
         type: String,
-        required: true
+        enum: ['kg', 'g','ml', 'l', 'u']
+    },
+    availableQuantity: {
+        type: Number,
     },
     offers: [{ type: String }],
     // offers: [{

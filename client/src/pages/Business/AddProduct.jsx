@@ -21,20 +21,33 @@ function AddProduct() {
     },
     {
       type: "number",
-      place: "Enter the available quantity",
-      name: "quantity",
-      label: "Quantity",
+      place: "Enter the quantity value for that price",
+      name: "priceQuanity",
+      label: "Price Quantity",
     },
     {
-      type: "text",
-      place: "Unit of above quantity",
-      name: "qtyUnit",
-      label: "Quantity Unit",
+      type: "number",
+      place: "Enter the available quantity of the product",
+      name: "availableQuantity",
+      label: "Available Quantity",
     },
+    // {
+    //   type: "number",
+    //   place: "Enter the available quantity",
+    //   name: "quantity",
+    //   label: "Quantity",
+    // },
+    // {
+    //   type: "text",
+    //   place: "Unit of above quantity",
+    //   name: "qtyUnit",
+    //   label: "Quantity Unit",
+    // },
   ];
 
   const [images, setImages] = useState([]);
   const [offers, setOffers] = useState([]);
+  const [unit, setUnit] = useState('');
   const [error, setError] = useState("");
   const [apiError, setApiError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -120,17 +133,20 @@ function AddProduct() {
       desc: e.target.desc.value,
       images,
       price: e.target.price.value,
-      quantity: e.target.quantity.value,
-      qtyUnit: e.target.qtyUnit.value,
+      // quantity: e.target.quantity.value,
+      // qtyUnit: e.target.qtyUnit.value,
+      priceQuanity: e.target.priceQuanity.value,
+      quanityUnit: unit,
+      availableQuantity: e.target.availableQuantity.value,
       offers,
     };
 
-    // console.log(formData);
+    console.log(formData);
 
     try {
       const response = await api.post("/business/products/add", formData);
-      if(response.status === 200) {
-        navigate('/business/listings')
+      if (response.status === 200) {
+        navigate("/business/listings");
       }
     } catch (error) {
       setApiError(error.response?.data?.message || "Something went wrong");
@@ -140,9 +156,13 @@ function AddProduct() {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="head-1">Add product for the listing:</h1>
-      <form className="my-8 sm:m-8 max-w-xl flex flex-col gap-8" onSubmit={handleSubmit}>
+    <div className="p-4 flex flex-col items-center">
+      <h1 className="head-1 mt-6 mb-8">Add product for the listing:</h1>
+      <div className="w-full flex justify-center max-w-2xl container-3 p-4">
+        <form
+          className="w-full my-8 sm:m-8 max-w-xl flex flex-col gap-8"
+          onSubmit={handleSubmit}
+        >
           <div>
             <div className="flex justify-between">
               <h2 className="head-3">Add Images:</h2>
@@ -164,7 +184,7 @@ function AddProduct() {
                   <img
                     src={img}
                     alt="Uploaded"
-                    className="w-full h-full rounded-md -z-10"
+                    className="w-full h-full rounded-md -z-10 object-cover"
                   />
                   <div
                     onClick={() => handleDeleteImage(index)}
@@ -193,6 +213,19 @@ function AddProduct() {
                   />
                 </li>
               ))}
+              <div className="flex flex-col text-sm">
+                <label>Product Quantity Unit</label>
+                <select name="priceQtyUnit" value={unit} onChange={(e) => setUnit(e.target.value)} className="input">
+                  <option value={""} className="dark:bg-base-dark">
+                    --Select--
+                  </option>
+                  {["kg", "g", "ml", "l", "u"].map((unit) => (
+                    <option key={unit} value={unit} className="dark:bg-base-dark">
+                      {unit}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </ul>
             <div className="flex flex-col text-sm gap-1 mt-8">
               <label>Description:</label>
@@ -225,10 +258,15 @@ function AddProduct() {
           </div>
 
           {apiError && <p className="text-red-500 text-sm mt-2">{apiError}</p>}
-          <button type="submit" className="btn mt-4 self-center" disabled={isSubmitting}>
+          <button
+            type="submit"
+            className="btn mt-4 self-center"
+            disabled={isSubmitting}
+          >
             {isSubmitting ? "Submitting..." : "Submit"}
           </button>
-      </form>
+        </form>
+      </div>
     </div>
   );
 }
