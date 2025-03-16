@@ -22,7 +22,7 @@ function Product() {
   const [reviewSuccess, setReviewSuccess] = useState(null);
   const [reviewUser, setReviewUser] = useState({});
   const [error, setError] = useState(null);
-  const rate = [1,2,3,4,5]
+  const rate = [1,2,3,4,5];
 
   const fetchProduct = async () => {
     setIsPending(true);
@@ -193,7 +193,7 @@ function Product() {
       )}
 
       <div>
-        <h2 className="text-xl font-bold mt-4 ml-4">Category | {product?.category} | {product?.title}</h2>
+        <h2 className="text-2xl font-semibold mt-4 ml-4 tracking-wider">Category | {product?.category} | {product?.title}</h2>
       </div>
 
       <div className="p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 overflow-y-hidden">
@@ -273,7 +273,7 @@ function Product() {
         <div className="container-3 p-4 space-y-4">
           <div className="space-y-2">
             <h2 className="head-2">Description:</h2>
-            <span className="p-2 border border-primary/30 rounded-md bg-primary/10">
+            <span className="p-2 border border-primary/30 rounded-md bg-primary/10 flex flex-wrap">
               {product?.desc}
             </span>
           </div>

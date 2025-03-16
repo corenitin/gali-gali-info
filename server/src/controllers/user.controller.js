@@ -157,6 +157,17 @@ const getUserById = asyncHandler(async(req, res) => {
   .json(
     new ApiResponse(200, user, "User fetched successfully")
   )
+});
+
+const getUser = asyncHandler(async(req, res) => {
+  const user = req.user;
+  // console.log(user);
+
+  return res
+  .status(200)
+  .json(
+    new ApiResponse(200, user, "User fetched successfully!")
+  )
 })
 
-export { registerUser, loginUser, logoutUser, getUserById };
+export { registerUser, loginUser, logoutUser, getUserById, getUser };

@@ -10,6 +10,7 @@ import Login from "./Login";
 import Product from "./Product";
 import Register from "./Register";
 import SelfPickUp from "./SelfPickUp";
+import Shops from "./Shops";
 
 export {
   Dashboard,
@@ -24,4 +25,5 @@ export {
   EditProduct,
   Category,
   Product,
+  Shops,
 };

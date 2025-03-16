@@ -19,6 +19,7 @@ const addProduct = asyncHandler(async (req, res) => {
         offers
     } = req.body;
 
+    // console.log(6)
     if (!email || !category || !title || !desc || !qtyUnit || !price || !quantity) {
         throw new ApiError(409, "All fields are required!");
     }
@@ -48,6 +49,7 @@ const addProduct = asyncHandler(async (req, res) => {
 
 const getAll = asyncHandler(async(req, res) => {
     const userId = req.user?._id;
+    // console.log(5)
     if(!userId) {
         throw new ApiError(404, "User id not found")
     }
@@ -67,6 +69,7 @@ const getAll = asyncHandler(async(req, res) => {
 const getById = asyncHandler(async(req, res) => {
     const { id } = req.params;
 
+    // console.log(4)
     const productId = new mongoose.Types.ObjectId(id);
     if(!productId) {
         throw new ApiError(404, "Product id not found")
@@ -87,6 +90,7 @@ const getById = asyncHandler(async(req, res) => {
 const deleteProduct = asyncHandler(async(req, res) => {
     const { id } = req.params;
 
+    // console.log(3)
     const productId = new mongoose.Types.ObjectId(id);
     if(!productId) {
         throw new ApiError(404, "Product id not found")
@@ -108,6 +112,7 @@ const updateById =  asyncHandler(async(req, res) => {
     const { id } = req.params;
     const product = req.body;
 
+    // console.log('2')
     if(!id) {
         throw new ApiError(409, "Product id not given!")
     }
@@ -137,6 +142,7 @@ const updateById =  asyncHandler(async(req, res) => {
 
 const getAllProductsByCategory = asyncHandler(async(req, res) => {
     const { category } = req.params;
+    // console.log('1')
     if(!category) {
         throw new ApiError(409, "Category required!")
     }
@@ -150,6 +156,42 @@ const getAllProductsByCategory = asyncHandler(async(req, res) => {
     .json(
         new ApiResponse(200, products, `All products fetched successfully for ${category}`)
     )
+});
+
+const fetchShopsByPincode = asyncHandler(async(req, res) => {
+    const { pincode } = req.params;
+    // console.log(pincode);
+
+    const shops = await User.find({ pincode, role: 'business' });
+    if(!shops) {
+        throw new ApiError(404, `No shops found for pincode-${pincode}`)
+    }
+    // const products = await Product.aggregate([
+    //     {
+    //       $lookup: {
+    //         from: "users", // This is your User collection name
+    //         localField: "user",
+    //         foreignField: "_id",
+    //         as: "userDetails"
+    //       }
+    //     },
+    //     {
+    //       $unwind: "$userDetails"
+    //     },
+    //     {
+    //       $match: {
+    //         "userDetails.pincode": pincode,
+    //         "userDetails.role": "business"
+    //       }
+    //     }
+    //   ]);
+    // console.log(products)
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, shops, `All shops fetched for the pincode - ${pincode}.`)
+    )
 })
 
 export { 
@@ -158,7 +200,8 @@ export {
     getById,
     deleteProduct,
     updateById,
-    getAllProductsByCategory
+    getAllProductsByCategory,
+    fetchShopsByPincode,
 };
 
 // let createdOffers = [];
