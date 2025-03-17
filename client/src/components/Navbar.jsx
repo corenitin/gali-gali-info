@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { FiMenu } from "react-icons/fi"; // Hamburger icon
-import { IoClose, IoSearchCircle, IoCloseCircle } from "react-icons/io5"; // Close icon
+import { IoSearchCircle, IoCloseCircle } from "react-icons/io5"; // Close icon
 import DarkModeBtn from "./DarkModeBtn";
 import gali_logo_dark from "../assets/loc_round_dark.svg";
 import gali_logo_light from "../assets/loc_round_light.svg";
@@ -50,7 +49,7 @@ function Navbar() {
         logout();
       }
     } catch (error) {
-      console.log("Error while logging out,", error);
+      console.log("Error while logging out,", error.response.data.message);
     }
   };
 

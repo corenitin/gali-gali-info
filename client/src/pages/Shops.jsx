@@ -4,13 +4,16 @@ import api from "../api";
 import Loading from "../components/Loading";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaPhoneFlip } from "react-icons/fa6";
-import { MdAlternateEmail } from "react-icons/md";
+import { MdAlternateEmail, MdCancel, MdOutlineCancel } from "react-icons/md";
 
 function Shops() {
   const { id } = useParams();
   const [shop, setShop] = useState({});
   const [products, setProducts] = useState([]);
   const [isPending, setIsPending] = useState(false);
+  const [selectedProducts, setSelectedProducts] = useState([]);
+  const [cancleHover, setCancleHover] = useState(false);
+  const [quantities, setQuantities] = useState({});
 
   const fetchProductsByShopId = async () => {
     setIsPending(true);
@@ -35,8 +38,60 @@ function Shops() {
     fetchProductsByShopId();
   }, [id]);
 
-  console.log(shop);
-  console.log(products);
+  const handleQuantityChange = (product, price, value) => {
+    console.log(price, value);
+    const quantity = parseInt(value) || "";
+    setQuantities((prev) => ({
+      ...prev,
+      [product?._id]: {
+        quantity,
+        totalPrice: (quantity * price) / product?.priceQuanity,
+      },
+    }));
+  };
+
+  const handleAddProductChange = (product) => {
+    const quantity = quantities[product?._id]?.quantity || product.priceQuanity;
+    const totalPrice =
+      (quantity * product.price) / product?.priceQuanity || product?.price;
+
+    setSelectedProducts((prev) => {
+      const existingProductIndex = prev.findIndex(
+        (item) => item._id === product._id
+      );
+
+      if (existingProductIndex !== -1) {
+        const updatedProducts = [...prev];
+        updatedProducts[existingProductIndex].quantity = quantity;
+        updatedProducts[existingProductIndex].totalPrice = totalPrice;
+        return updatedProducts;
+      } else {
+        return [
+          ...prev,
+          {
+            ...product,
+            quantity,
+            totalPrice,
+          },
+        ];
+      }
+    });
+  };
+
+  const handleDeleteProduct = (productId) => {
+    setSelectedProducts((prev) =>
+      prev.filter((item) => item._id !== productId)
+    );
+  };
+
+  const totalAmount = selectedProducts.reduce(
+    (acc, item) => acc + item.totalPrice,
+    0
+  );
+  const totalSelectedProducts = selectedProducts.length;
+
+  // console.log(shop);
+  // console.log(products);
 
   if (isPending) return <Loading />;
 
@@ -94,10 +149,16 @@ function Shops() {
           <h2 className="head-2 m-2 sm:m-4">
             All products from {shop?.organization_name}:
           </h2>
+
           <div className="grid grid-cols-[1fr_auto] gap-4">
             <ul className="container-3 grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-4 sm:gap-8 p-4 sm:p-8">
               {products.map((product) => (
-                <li className="flex flex-col gap-2 sm:gap-4 p-2 sm:p-4 w-full max-w-96 bg-slate-200/30 hover:bg-slate-300/50 dark:bg-slate-400/10 dark:hover:bg-slate-400/20 rounded-xl border border-slate-500/40 hover:border-transparent hover:shadow-md hover:shadow-slate-400/35 dark:hover:shadow-slate-950 dark:border-slate-600/50 dark:hover:border-transparent">
+                <li
+                  className={`flex flex-col gap-2 sm:gap-4 p-2 sm:p-4 w-full max-w-96 rounded-xl
+                bg-slate-200/30 hover:bg-slate-300/50 dark:bg-slate-400/10 dark:hover:bg-slate-400/20
+                border border-slate-500/40 hover:border-transparent  dark:border-slate-600/50 dark:hover:border-transparent
+                hover:shadow-md hover:shadow-slate-400/35 dark:hover:shadow-slate-950`}
+                >
                   <Link
                     to={`/dashboard/category/${product?.category}/${product?._id}`}
                     className="w-full flex justify-between"
@@ -116,35 +177,126 @@ function Shops() {
                     />
                   </Link>
                   <hr className="border-slate-300 dark:border-slate-600 rounded" />
-                  <div className="flex flex-col gap-2">
-                    <label className="text-sm opacity-35">
-                      Select Quantity ({product?.quanityUnit})
-                    </label>
-                    <input
-                      type="number"
-                      className="input text-base max-w-40"
-                      name="reqQuantity"
-                      placeholder="Enter quantity..."
-                    />
-                    <label
-                      className={`ml-2 ${
-                        product?.availableQuantity > 0
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      
-                      {product?.availableQuantity > 0
-                        ? "Available: " + product?.availableQuantity
-                        : "Out of stock!"}
-                    </label>
+                  <div className="flex gap-2">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm opacity-35">
+                        Select Quantity ({product?.quanityUnit})
+                      </label>
+                      <input
+                        type="number"
+                        className={`input text-base max-w-40 ${
+                          product?.availableQuantity > 0
+                            ? "cursor-text"
+                            : "cursor-not-allowed"
+                        }`}
+                        name="reqQuantity"
+                        placeholder="Enter quantity..."
+                        min={0}
+                        max={product?.availableQuantity}
+                        disabled={product?.availableQuantity <= 0}
+                        value={quantities[product?._id]?.quantity || ""}
+                        onChange={(e) =>
+                          handleQuantityChange(
+                            product,
+                            product?.price,
+                            e.target.value
+                          )
+                        }
+                      />
+                      <label
+                        className={`ml-2 ${
+                          product?.availableQuantity > 0
+                            ? "text-green-600"
+                            : "text-red-600"
+                        }`}
+                      >
+                        {product?.availableQuantity > 0
+                          ? "Available: " +
+                            product?.availableQuantity +
+                            "(" +
+                            product?.quanityUnit +
+                            ")"
+                          : "Out of stock!"}
+                      </label>
+                    </div>
+                    <div className="h-full w-px bg-slate-400"></div>
+                    <div className="flex flex-col gap-2">
+                      <label className="text-sm opacity-35">Total Price</label>
+                      <span>
+                        {quantities[product?._id]?.totalPrice || product?.price}{" "}
+                        Rs
+                      </span>
+                      <button
+                        onClick={() => handleAddProductChange(product)}
+                        className={`btn ${
+                          product?.availableQuantity <= 0
+                            ? "opacity-50"
+                            : "opacity-100"
+                        }`}
+                        disabled={product?.availableQuantity <= 0}
+                      >
+                        Add
+                      </button>
+                    </div>
                   </div>
                 </li>
               ))}
             </ul>
             <div className="container-3 w-full max-w-xl bg-base-light/10 p-4">
-              Selected products
+              {selectedProducts.length <= 0 ? (
+                <span>No products added yet!</span>
+              ) : (
+                <ul className="space-y-2">
+                  {selectedProducts.map((item) => (
+                    <li
+                      key={item._id}
+                      className="flex justify-between items-center gap-2 border border-slate-400 rounded-2xl p-2"
+                    >
+                      <div className="flex flex-col">
+                        <span>{item.title}</span>
+                        <span className="opacity-75 text-sm">
+                          {item.quantity}({item?.quanityUnit}) |{" "}
+                          {item.totalPrice}
+                          rs
+                        </span>
+                      </div>
+                      <button
+                        className="w-fit h-fit cursor-pointer"
+                        onClick={() => handleDeleteProduct(item._id)}
+                      >
+                        {!cancleHover ? (
+                          <MdOutlineCancel className="text-red-500" size={20} />
+                        ) : (
+                          <MdCancel className="text-red-500" size={20} />
+                        )}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
+          </div>
+
+          <div className="container-3 p-4 flex flex-col md:flex-row justify-evenly items-center gap-4 my-4">
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="head-3">Total Selected Products:</span>
+                <span className="px-4 py-2 border border-primary/30 bg-primary/10 rounded-md">
+                  {totalSelectedProducts}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="head-3">Total Amount:</span>
+                <span className="px-4 py-2 border border-primary/30 bg-primary/10 rounded-md">
+                  {totalAmount} Rs
+                </span>
+              </div>
+            </div>
+
+            <button className="h-fit flex flex-col px-6 py-4 rounded-full border border-secondary hover:border-transparent bg-secondary/50 hover:bg-secondary hover:shadow-md hover:shadow-secondary/25 cursor-pointer">
+              <span>Send a request to the shop owner</span>
+              <span className="">~ {shop?.ownerName}</span>
+            </button>
           </div>
         </section>
       </div>
