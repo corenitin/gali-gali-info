@@ -2,7 +2,6 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 import { Product } from "../models/product.model.js";
-import { Offer } from "../models/offer.model.js";
 import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 
@@ -28,7 +27,7 @@ const addProduct = asyncHandler(async (req, res) => {
     !category ||
     !title ||
     !desc ||
-    !price || 
+    !price ||
     !priceQuanity ||
     !quanityUnit ||
     !availableQuantity

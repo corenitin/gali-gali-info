@@ -1,30 +1,31 @@
 import { Schema, model } from "mongoose";
 
-const productSchema = new Schema({
+const productSchema = new Schema(
+  {
     user: {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-        required: true
+      type: Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     category: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     title: {
-        type: String,
-        required: true,
+      type: String,
+      required: true,
     },
     desc: String,
     images: [
-        {
-            type: String,
-            required: true
-        }
+      {
+        type: String,
+        required: true,
+      },
     ],
     price: {
-        type: Number,
-        required: true,
-    }, 
+      type: Number,
+      required: true,
+    },
     // quantity: {
     //     type: Number,
     //     required: true,
@@ -34,14 +35,14 @@ const productSchema = new Schema({
     //     required: true
     // },
     priceQuanity: {
-        type: Number,
+      type: Number,
     },
     quanityUnit: {
-        type: String,
-        enum: ['kg', 'g','ml', 'l', 'u']
+      type: String,
+      enum: ["kg", "g", "ml", "l", "u"],
     },
     availableQuantity: {
-        type: Number,
+      type: Number,
     },
     offers: [{ type: String }],
     // offers: [{
@@ -49,15 +50,17 @@ const productSchema = new Schema({
     //     ref: "Offer"
     // }],
     overallRating: {
-        type: Number,
-        default: 0
+      type: Number,
+      default: 0,
     },
     reviews: [
-        {
-            type: Schema.Types.ObjectId,
-            ref: "Review"
-        }
-    ]
-}, {timestamps: true});
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+      },
+    ],
+  },
+  { timestamps: true }
+);
 
-export const Product = model('Product', productSchema);
+export const Product = model("Product", productSchema);

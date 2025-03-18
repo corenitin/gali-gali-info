@@ -73,25 +73,29 @@ const addReview = asyncHandler(async (req, res) => {
 
   return res
     .status(200)
-    .json(new ApiResponse(200, { review, rate: overallRating }, "Review create successfully."));
+    .json(
+      new ApiResponse(
+        200,
+        { review, rate: overallRating },
+        "Review create successfully."
+      )
+    );
 });
 
-const getReviewById = asyncHandler(async(req, res) => {
-    const { id } = req.params;
-    if(!id) {
-        throw new ApiError(409, "Review id is required!")
-    }
+const getReviewById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  if (!id) {
+    throw new ApiError(409, "Review id is required!");
+  }
 
-    const review = await Review.findById(id);
-    if(!review) {
-        throw new ApiError(404, "Review not found!")
-    }
+  const review = await Review.findById(id);
+  if (!review) {
+    throw new ApiError(404, "Review not found!");
+  }
 
-    return res
+  return res
     .status(200)
-    .json(
-        new ApiResponse(200, review, "Review fetched successfully.")
-    )
-})
+    .json(new ApiResponse(200, review, "Review fetched successfully."));
+});
 
 export { getAllReviewsByProduct, addReview, getReviewById };
