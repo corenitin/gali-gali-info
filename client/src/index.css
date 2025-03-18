@@ -180,3 +180,7 @@ body::-webkit-scrollbar-thumb:hover {
 .container-3 {
   @apply bg-light dark:bg-dark border border-primary dark:border-primary/75 rounded-lg
 }
+
+#quanityInput::placeholder {
+  font-size: 12px;
+}

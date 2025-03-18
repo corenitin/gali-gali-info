@@ -183,6 +183,7 @@ function Shops() {
                         Select Quantity ({product?.quanityUnit})
                       </label>
                       <input
+                        id="quanityInput"
                         type="number"
                         className={`input text-base max-w-40 ${
                           product?.availableQuantity > 0
@@ -235,7 +236,7 @@ function Shops() {
                         }`}
                         disabled={product?.availableQuantity <= 0}
                       >
-                        Add
+                        Add 
                       </button>
                     </div>
                   </div>

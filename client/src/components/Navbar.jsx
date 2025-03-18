@@ -120,6 +120,7 @@ function Navbar() {
           className="cursor-pointer p-2 rounded-full hover:bg-slate-300 dark:hover:bg-slate-800/75 transition-all duration-300"
           size={32}
           onClick={() => setIsNotificationDialogOpen((prev) => !prev)}
+          
         />
         <div ref={dropdownRef} className="relative ">
           <div
@@ -179,7 +180,7 @@ function Navbar() {
         </div>
       )}
 
-      {isNotificationDialogOpen && <NotificationDialog />}
+      {isNotificationDialogOpen && <NotificationDialog setIsNotificationDialogOpen={setIsNotificationDialogOpen} />}
     </nav>
   );
 }
