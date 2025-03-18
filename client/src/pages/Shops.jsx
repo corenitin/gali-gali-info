@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import api from "../api";
 import Loading from "../components/Loading";
 import { IoLocationSharp } from "react-icons/io5";
@@ -14,6 +14,9 @@ function Shops() {
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [cancleHover, setCancleHover] = useState(false);
   const [quantities, setQuantities] = useState({});
+  const [error, setError] = useState(null);
+  const [orderIsPending, setOrderIsPending] = useState(false);
+  const navigate = useNavigate();
 
   const fetchProductsByShopId = async () => {
     setIsPending(true);
@@ -92,6 +95,27 @@ function Shops() {
 
   // console.log(shop);
   // console.log(products);
+  console.log(selectedProducts);
+
+  const handleOrderSubmit = async () => {
+    setOrderIsPending(true);
+    try {
+      const res = await api.post("/orders/place", {
+        shop: shop?._id, 
+        products: selectedProducts, 
+        noOfProducts: totalSelectedProducts, 
+        totalAmount
+      });
+      if (res.status === 200) {
+        navigate("/");
+      }
+    } catch (error) {
+      setError(error.response.data.message);
+      console.log("Error while placing order: ", error.response.data.message);
+    } finally {
+      setOrderIsPending(false);
+    }
+  };
 
   if (isPending) return <Loading />;
 
@@ -149,7 +173,6 @@ function Shops() {
           <h2 className="head-2 m-2 sm:m-4">
             All products from {shop?.organization_name}:
           </h2>
-
           <div className="grid grid-cols-[1fr_auto] gap-4">
             <ul className="container-3 grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-4 sm:gap-8 p-4 sm:p-8">
               {products.map((product) => (
@@ -236,7 +259,7 @@ function Shops() {
                         }`}
                         disabled={product?.availableQuantity <= 0}
                       >
-                        Add 
+                        Add
                       </button>
                     </div>
                   </div>
@@ -277,7 +300,14 @@ function Shops() {
               )}
             </div>
           </div>
-
+          {/* Show error message */}
+          {error && (
+            <span className="px-4 py-2 rounded-md bg-red-600/10 border border-red-600 text-red-600">
+              {error}
+            </span>
+          )}
+          
+          {/* Order Submit button */}
           <div className="container-3 p-4 flex flex-col md:flex-row justify-evenly items-center gap-4 my-4">
             <div className="flex flex-col items-center gap-4">
               <div className="flex items-center gap-2">
@@ -294,9 +324,19 @@ function Shops() {
               </div>
             </div>
 
-            <button className="h-fit flex flex-col px-6 py-4 rounded-full border border-secondary hover:border-transparent bg-secondary/50 dark:bg-secondary/25 hover:bg-secondary dark:hover:bg-secondary/100 hover:shadow-md hover:shadow-secondary/25 dark:hover:shadow-none hover:dark:text-black transition-all duration-300 cursor-pointer">
-              <span>Send a request to the shop owner</span>
-              <span className="">~ {shop?.ownerName}</span>
+            <button
+              onClick={handleOrderSubmit}
+              className="h-fit flex flex-col px-6 py-4 rounded-full border border-secondary hover:border-transparent bg-secondary/50 dark:bg-secondary/25 hover:bg-secondary dark:hover:bg-secondary/100 hover:shadow-md hover:shadow-secondary/25 dark:hover:shadow-none hover:dark:text-black transition-all duration-300 cursor-pointer"
+              disabled={orderIsPending}
+            >
+              {orderIsPending ? (
+                "Sending..."
+              ) : (
+                <div>
+                  <span>Send a request to the shop owner</span>
+                  <span className="">~ {shop?.ownerName}</span>
+                </div>
+              )}
             </button>
           </div>
         </section>
