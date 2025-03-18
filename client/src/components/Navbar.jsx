@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
-import { IoSearchCircle, IoCloseCircle } from "react-icons/io5"; // Close icon
+import {
+  IoSearchCircle,
+  IoCloseCircle,
+  IoNotifications,
+} from "react-icons/io5"; // Close icon
 import DarkModeBtn from "./DarkModeBtn";
 import gali_logo_dark from "../assets/loc_round_dark.svg";
 import gali_logo_light from "../assets/loc_round_light.svg";
@@ -7,10 +11,13 @@ import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router";
 import api from "../api";
 import { MdLocationOn } from "react-icons/md";
+import NotificationDialog from "./NotificationDialog";
 
 function Navbar() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isNotificationDialogOpen, setIsNotificationDialogOpen] =
+    useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const { user, logout, sidebarToggle } = useAuth();
@@ -59,7 +66,7 @@ function Navbar() {
       {user && (
         <button
           onClick={toggleMobileMenu}
-          className="lg:hidden text-2xl rounded-md bg-gray-200 dark:bg-primary-dark"
+          className="lg:hidden text-2xl rounded-md bg-gray-200 dark:bg-primary-dark shadow"
         >
           {isMobileMenuOpen ? (
             <IoCloseCircle size={32} />
@@ -70,9 +77,10 @@ function Navbar() {
       )}
 
       {/* Website Name & Logo */}
-      <Link 
-      to={'/'}
-      className="flex-1 flex items-center justify-center lg:justify-start gap-2">
+      <Link
+        to={"/"}
+        className="flex-1 flex items-center justify-center lg:justify-start gap-2"
+      >
         <img
           src={theme === "dark" ? gali_logo_dark : gali_logo_light}
           alt="Logo"
@@ -106,18 +114,23 @@ function Navbar() {
       </div>
 
       {/* Right Side: Profile & Mobile Menu */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1 ml-4">
         {/* Profile Section */}
-        <div ref={dropdownRef} className="relative">
+        <IoNotifications
+          className="cursor-pointer p-2 rounded-full hover:bg-slate-300 dark:hover:bg-slate-800/75 transition-all duration-300"
+          size={32}
+          onClick={() => setIsNotificationDialogOpen((prev) => !prev)}
+        />
+        <div ref={dropdownRef} className="relative ">
           <div
             onClick={toggleDropdown}
-            className="flex items-center gap-1 rounded-full hover:bg-primary/15 px-1.5 py-1 border border-transparent hover:border-primary/15 cursor-pointer"
+            className="flex items-center gap-1 rounded-full hover:bg-primary/15 px-1.5 py-1 border border-transparent hover:border-primary/15 cursor-pointer transition-all duration-300"
           >
             {user && user.photo ? (
               <img
                 src={user.photo}
                 alt=""
-                className="w-10 h-10 rounded-full object-cover"
+                className="w-10 h-10 rounded-full object-cover shadow-md"
               />
             ) : (
               <DarkModeBtn />
@@ -165,6 +178,8 @@ function Navbar() {
           <input type="text" placeholder="Search" className="input w-full" />
         </div>
       )}
+
+      {isNotificationDialogOpen && <NotificationDialog />}
     </nav>
   );
 }

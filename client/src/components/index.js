@@ -6,6 +6,7 @@ import DashboardNavbar from "./DashboardNavbar";
 import Footer from "./Footer";
 import Loading from "./Loading";
 import Navbar from "./Navbar";
+import NotificationDialog from "./NotificationDialog";
 import ProtectedRoute from "./ProtectedRoute";
 import Sidebar from "./Sidebar";
 import Test from "./Test";
@@ -22,4 +23,5 @@ export {
     Sidebar,
     BusinessLayout,
     Loading,
+    NotificationDialog,
 }

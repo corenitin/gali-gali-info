@@ -154,7 +154,7 @@ function Shops() {
             <ul className="container-3 grid md:grid-cols-2 xl:grid-cols-3 justify-items-center gap-4 sm:gap-8 p-4 sm:p-8">
               {products.map((product) => (
                 <li
-                  className={`flex flex-col gap-2 sm:gap-4 p-2 sm:p-4 w-full max-w-96 rounded-xl
+                  className={`flex flex-col gap-2 sm:gap-4 p-2 sm:p-4 w-full max-w-96 rounded-xl transition-all duration-300
                 bg-slate-200/30 hover:bg-slate-300/50 dark:bg-slate-400/10 dark:hover:bg-slate-400/20
                 border border-slate-500/40 hover:border-transparent  dark:border-slate-600/50 dark:hover:border-transparent
                 hover:shadow-md hover:shadow-slate-400/35 dark:hover:shadow-slate-950`}
@@ -293,7 +293,7 @@ function Shops() {
               </div>
             </div>
 
-            <button className="h-fit flex flex-col px-6 py-4 rounded-full border border-secondary hover:border-transparent bg-secondary/50 hover:bg-secondary hover:shadow-md hover:shadow-secondary/25 cursor-pointer">
+            <button className="h-fit flex flex-col px-6 py-4 rounded-full border border-secondary hover:border-transparent bg-secondary/50 dark:bg-secondary/25 hover:bg-secondary dark:hover:bg-secondary/100 hover:shadow-md hover:shadow-secondary/25 dark:hover:shadow-none hover:dark:text-black transition-all duration-300 cursor-pointer">
               <span>Send a request to the shop owner</span>
               <span className="">~ {shop?.ownerName}</span>
             </button>
