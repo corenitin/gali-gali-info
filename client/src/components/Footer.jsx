@@ -4,7 +4,7 @@ import { FaInstagram, FaFacebook, FaTwitter, FaLinkedin } from "react-icons/fa";
 
 function Footer() {
   return (
-    <div className="bg-footer text-light px-4 py-10 flex flex-col items-center  gap-12 lg:gap-6">
+    <div className="bg-footer dark:bg-dark text-base-light dark:text-light px-4 py-10 flex flex-col items-center  gap-12 lg:gap-6">
       <div className="w-full max-w-5xl flex flex-col md:flex-row justify-between items-center md:items-start text-center md:text-left gap-12 lg:gap-6">
         
         {/* Left Section - Branding & Contact */}
@@ -43,7 +43,7 @@ function Footer() {
       </div>
 
       {/* Bottom Section - Copyright */}
-      <span className="text-light text-center py-2">
+      <span className="text-center py-2">
         <p>© 2021 Gali Gali Info. All Rights Reserved</p>
       </span>
     </div>

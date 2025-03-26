@@ -5,6 +5,7 @@ import { useAuth } from "../context/AuthContext";
 
 function DarkModeBtn() {
   const { user } = useAuth();
+  console.log(user)
   const [isDarkMode, setIsDarkMode] = useState(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) return savedTheme === "dark";

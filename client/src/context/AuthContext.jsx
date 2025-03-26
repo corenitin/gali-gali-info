@@ -1,43 +1,53 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import api from "../utils/api";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [user, setUser] = useState(() => {
-        const storedUser = localStorage.getItem("user");
-        return storedUser ? JSON.parse(storedUser) : null;
-    });
-    const [ sidebarOpen, setSidebarOpen ] = useState(false);
-    const theme = localStorage.getItem('theme');
+  const [user, setUser] = useState();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-        } else {
-            localStorage.removeItem("user");
-        }
-    }, [user]);
-
-    const login = (userData) => {
-        // console.log(userData)
-        setUser(userData);
-        localStorage.setItem("user", JSON.stringify(userData));
-    };
-
-    const logout = () => {
-        setUser(null);
-        localStorage.removeItem("user");
-    };
-
-    const sidebarToggle = () => {
-        setSidebarOpen((prev) => !prev)
+  // console.log(user)
+  const fetchUser = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get("/users/get", { withCredentials: true });
+      if (res.status === 200) {
+        // console.log(res.data.data)
+        setUser(res.data.data);
+      }
+    } catch (error) {
+      setUser(null);
+      console.log("Error: ", error.response?.data?.message);
+    } finally {
+      setLoading(false);
     }
+  };
 
-    return (
-        <AuthContext.Provider value={{ user, login, logout, sidebarToggle, sidebarOpen }}>
-            {children}
-        </AuthContext.Provider>
-    );
-}
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const login = (userData) => {
+    setUser(userData);
+  };
+
+  const logout = () => {
+    setUser(null);
+  };
+
+  const sidebarToggle = () => {
+    setSidebarOpen((prev) => !prev);
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{ user, login, logout, sidebarToggle, sidebarOpen, loading }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+};
 
 export const useAuth = () => useContext(AuthContext);

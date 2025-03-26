@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
-import api from "../api";
+import api from "../utils/api";
 import Loading from "../components/Loading";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaPhoneFlip } from "react-icons/fa6";
@@ -101,10 +101,10 @@ function Shops() {
     setOrderIsPending(true);
     try {
       const res = await api.post("/orders/place", {
-        shop: shop?._id, 
-        products: selectedProducts, 
-        noOfProducts: totalSelectedProducts, 
-        totalAmount
+        shop: shop?._id,
+        products: selectedProducts,
+        noOfProducts: totalSelectedProducts,
+        totalAmount,
       });
       if (res.status === 200) {
         navigate("/");
@@ -306,7 +306,7 @@ function Shops() {
               {error}
             </span>
           )}
-          
+
           {/* Order Submit button */}
           <div className="container-3 p-4 flex flex-col md:flex-row justify-evenly items-center gap-4 my-4">
             <div className="flex flex-col items-center gap-4">

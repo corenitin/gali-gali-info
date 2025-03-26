@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { MdOutlineChangeCircle } from "react-icons/md";
 import { IoPersonCircle } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import api from "../../api";
+import api from "../../utils/api";
 import axios from "axios";
 
 const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
 const cloud_name = import.meta.env.VITE_CLOUD_NAME;
-console.log(upload_preset, cloud_name)
+console.log(upload_preset, cloud_name);
 
 function BusinessRegister({ setRoleToggle }) {
   const [image, setImage] = useState(null);
@@ -115,7 +115,6 @@ function BusinessRegister({ setRoleToggle }) {
         password: formData.password,
         role: "business",
         profileDetails: {
-          
           organization_name: formData.organization_name,
           businessAddress: formData.businessAddress,
           city: formData.city,
@@ -248,7 +247,12 @@ function BusinessRegister({ setRoleToggle }) {
                 />
                 {isUploading && <span>Uploading...</span>}
               </div>
-              <textarea className="input w-full" name="desc" value={formData.desc} onChange={handleChange}></textarea>
+              <textarea
+                className="input w-full"
+                name="desc"
+                value={formData.desc}
+                onChange={handleChange}
+              ></textarea>
             </div>
 
             <div className="p-4">
@@ -256,38 +260,42 @@ function BusinessRegister({ setRoleToggle }) {
                 Choose Business Category:
               </h3>
               <div className="flex items-center gap-8 ml-8">
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="category"
-                  value="food"
-                  checked={formData.category === "food"}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <span className="w-5 h-5 border-2 border-secondary rounded-full flex items-center justify-center">
-                  {formData.category === "food" && (
-                    <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
-                  )}
-                </span>
-                <span className="px-2 py-1 rounded-md hover:bg-primary/30">Food</span>
-              </label>
-              <label className="flex items-center space-x-2 cursor-pointer">
-                <input
-                  type="radio"
-                  name="category"
-                  value="grocery"
-                  checked={formData.category === "grocery"}
-                  onChange={handleChange}
-                  className="hidden"
-                />
-                <span className="w-5 h-5 border-2 border-secondary rounded-full flex items-center justify-center">
-                  {formData.category === "grocery" && (
-                    <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
-                  )}
-                </span>
-                <span className="px-2 py-1 rounded-md hover:bg-primary/30">Grocery</span>
-              </label>
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="category"
+                    value="food"
+                    checked={formData.category === "food"}
+                    onChange={handleChange}
+                    className="hidden"
+                  />
+                  <span className="w-5 h-5 border-2 border-secondary rounded-full flex items-center justify-center">
+                    {formData.category === "food" && (
+                      <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
+                    )}
+                  </span>
+                  <span className="px-2 py-1 rounded-md hover:bg-primary/30">
+                    Food
+                  </span>
+                </label>
+                <label className="flex items-center space-x-2 cursor-pointer">
+                  <input
+                    type="radio"
+                    name="category"
+                    value="grocery"
+                    checked={formData.category === "grocery"}
+                    onChange={handleChange}
+                    className="hidden"
+                  />
+                  <span className="w-5 h-5 border-2 border-secondary rounded-full flex items-center justify-center">
+                    {formData.category === "grocery" && (
+                      <span className="w-2.5 h-2.5 bg-primary rounded-full"></span>
+                    )}
+                  </span>
+                  <span className="px-2 py-1 rounded-md hover:bg-primary/30">
+                    Grocery
+                  </span>
+                </label>
               </div>
             </div>
           </div>

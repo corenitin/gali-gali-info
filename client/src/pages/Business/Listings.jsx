@@ -3,7 +3,7 @@ import { NewCollectionDialog } from "../../container";
 import { BiEditAlt, BiSolidEditAlt } from "react-icons/bi";
 import { MdDeleteOutline, MdDelete } from "react-icons/md";
 import { Link, useNavigate } from "react-router";
-import api from "../../api";
+import api from "../../utils/api";
 import { Loading } from "../../components";
 
 function Listings() {
@@ -73,8 +73,7 @@ function Listings() {
       console.log("Error while fetching products!", error);
     } finally {
       setIsPending(false);
-      setTimeout(() => {
-      }, 3000);
+      setTimeout(() => {}, 3000);
     }
   };
   useEffect(() => {

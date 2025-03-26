@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../api";
+import api from "../utils/api";
 
 function Test() {
   const [username, setUsername] = useState("");

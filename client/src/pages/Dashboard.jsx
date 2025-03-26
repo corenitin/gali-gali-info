@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import api from "../api.js";
-import { Loading } from "../components";
+import api from "../utils/api.js";
+import { Loading, Spinner } from "../components";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -55,7 +55,7 @@ function Dashboard() {
   }, []);
 
   return (
-    <div className="p-4 flex flex-col gap-12">
+    <div className="seven-xl">
       {/* Hero Section */}
       <div className="rounded-2xl bg-gradient-to-br from-[#FFE203] via-[#FFC107] to-[#FF6A00] text-black max-w-xl p-8 xs:p-10 sm:p-12 lg:p-16 xl:p-12 flex flex-col xs:flex-row items-center gap-4 mx-auto">
         <p className="flex flex-col text-center xs:text-left">
@@ -91,9 +91,9 @@ function Dashboard() {
             ) : (
               <div className="w-full bg-primary/10 p-4 xs:p-6 rounded-xl">
                 <div className="flex flex-col md:flex-row justify-evenly items-center">
-                  <ul className="flex gap-6">
+                  <ul className="flex flex-wrap justify-center gap-6">
                     {category && category?.items?.length !== 0 ? (
-                      category.items.map((item, i) => (
+                      category.items.slice(0, 4).map((item, i) => (
                         <Link
                           key={i}
                           to={`/dashboard/category/${item.category}/${item._id}`}

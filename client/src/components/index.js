@@ -9,6 +9,7 @@ import Navbar from "./Navbar";
 import NotificationDialog from "./NotificationDialog";
 import ProtectedRoute from "./ProtectedRoute";
 import Sidebar from "./Sidebar";
+import Spinner from "./Spinner";
 import Test from "./Test";
 
 export {
@@ -24,4 +25,5 @@ export {
     BusinessLayout,
     Loading,
     NotificationDialog,
+    Spinner,
 }

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
-import api from "../../api";
+import api from "../../utils/api";
 import { useNavigate, useParams } from "react-router";
 import { Loading } from "../../components";
 
@@ -14,14 +14,14 @@ function EditProduct() {
   // Fetch product details when the component mounts
   const fetchProduct = async () => {
     setIsPending(true);
-    console.log(id)
+    console.log(id);
     try {
       const res = await api.get(`/business/products/${id}`);
       if (res.status === 200) {
         setProduct(res.data.data);
         setImages(res.data.data.images || []); // Pre-fill images
         setOffers(res.data.data.offers || []); // Pre-fill offers
-        setUnit(res.data.data.quanityUnit)
+        setUnit(res.data.data.quanityUnit);
       }
     } catch (error) {
       console.log("Error while fetching product details", error);
@@ -75,7 +75,7 @@ function EditProduct() {
 
   const [images, setImages] = useState([]);
   const [offers, setOffers] = useState([]);
-  const [unit, setUnit] = useState('');
+  const [unit, setUnit] = useState("");
   const [error, setError] = useState("");
   const [apiError, setApiError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -157,8 +157,8 @@ function EditProduct() {
     try {
       // Send a PUT request to update the product
       const response = await api.put(`/business/products/${id}`, formData);
-      if(response.status === 200) {
-        navigate('/business/listings');
+      if (response.status === 200) {
+        navigate("/business/listings");
       }
     } catch (error) {
       setApiError(error.response?.data?.message || "Something went wrong");
@@ -169,7 +169,7 @@ function EditProduct() {
 
   // Show loading spinner while fetching product data
   if (isPending) {
-    return <Loading />
+    return <Loading />;
   }
 
   return (
@@ -229,18 +229,23 @@ function EditProduct() {
               </li>
             ))}
             <div className="flex flex-col text-sm">
-                <label>Product Quantity Unit</label>
-                <select name="priceQtyUnit" value={unit} onChange={(e) => setUnit(e.target.value)} className="input">
-                  <option value={""} className="dark:bg-base-dark">
-                    --Select--
+              <label>Product Quantity Unit</label>
+              <select
+                name="priceQtyUnit"
+                value={unit}
+                onChange={(e) => setUnit(e.target.value)}
+                className="input"
+              >
+                <option value={""} className="dark:bg-base-dark">
+                  --Select--
+                </option>
+                {["kg", "g", "ml", "l", "u"].map((unit) => (
+                  <option key={unit} value={unit} className="dark:bg-base-dark">
+                    {unit}
                   </option>
-                  {["kg", "g", "ml", "l", "u"].map((unit) => (
-                    <option key={unit} value={unit} className="dark:bg-base-dark">
-                      {unit}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                ))}
+              </select>
+            </div>
           </ul>
           <div className="flex flex-col text-sm gap-1 mt-8">
             <label>Description:</label>

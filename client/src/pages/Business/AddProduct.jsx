@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
-import api from "../../api";
+import api from "../../utils/api";
 import { useNavigate, useParams } from "react-router";
 
 function AddProduct() {
@@ -47,7 +47,7 @@ function AddProduct() {
 
   const [images, setImages] = useState([]);
   const [offers, setOffers] = useState([]);
-  const [unit, setUnit] = useState('');
+  const [unit, setUnit] = useState("");
   const [error, setError] = useState("");
   const [apiError, setApiError] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -215,12 +215,21 @@ function AddProduct() {
               ))}
               <div className="flex flex-col text-sm">
                 <label>Product Quantity Unit</label>
-                <select name="priceQtyUnit" value={unit} onChange={(e) => setUnit(e.target.value)} className="input">
+                <select
+                  name="priceQtyUnit"
+                  value={unit}
+                  onChange={(e) => setUnit(e.target.value)}
+                  className="input"
+                >
                   <option value={""} className="dark:bg-base-dark">
                     --Select--
                   </option>
                   {["kg", "g", "ml", "l", "u"].map((unit) => (
-                    <option key={unit} value={unit} className="dark:bg-base-dark">
+                    <option
+                      key={unit}
+                      value={unit}
+                      className="dark:bg-base-dark"
+                    >
                       {unit}
                     </option>
                   ))}

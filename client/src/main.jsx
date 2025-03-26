@@ -1,8 +1,14 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { Route, BrowserRouter as Router, Routes, Navigate, Outlet } from "react-router"; // Import Navigate
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  Navigate,
+  Outlet,
+} from "react-router"; // Import Navigate
 import "./index.css";
-import './styles/animation.css'
+import "./styles/animation.css";
 import App from "./App.jsx";
 
 import {
@@ -20,17 +26,19 @@ import {
   Product,
   Shops,
 } from "./pages";
-import { BusinessLayout, DashbaordLayout, ProtectedRoute } from "./components";
+import { BusinessLayout, ProtectedRoute } from "./components";
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { SocketProvider } from "./context/SocketContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
+  // <StrictMode>
+  <SocketProvider>
     <AuthProvider>
       <Router>
         <Routes>
           <Route path="/" element={<App />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
-            <Route path="dashboard" element={<DashbaordLayout />}>
+            <Route path="dashboard" element={<Outlet />}>
               <Route path="" element={<Dashboard />} />
               <Route path="category/:name" element={<Outlet />}>
                 <Route path="" element={<Category />} />
@@ -61,5 +69,7 @@ createRoot(document.getElementById("root")).render(
         </Routes>
       </Router>
     </AuthProvider>
-  </StrictMode>
+  </SocketProvider>
+
+  // </StrictMode>
 );

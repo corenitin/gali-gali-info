@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Loading } from "../components";
-import api from "../api";
+import api from "../utils/api";
 import { MdAlternateEmail } from "react-icons/md";
 import { FaPhoneFlip, FaStar, FaRegStar } from "react-icons/fa6";
 import { IoLocationSharp, IoCloseCircle } from "react-icons/io5";
@@ -22,7 +22,7 @@ function Product() {
   const [reviewSuccess, setReviewSuccess] = useState(null);
   const [reviewUser, setReviewUser] = useState({});
   const [error, setError] = useState(null);
-  const rate = [1,2,3,4,5];
+  const rate = [1, 2, 3, 4, 5];
 
   const fetchProduct = async () => {
     setIsPending(true);
@@ -33,7 +33,7 @@ function Product() {
         setProduct(res.data.data);
         setSrc(res.data.data.images[0]);
         fetchUser(res.data.data.user);
-        await fetchReviews(res.data.data._id)
+        await fetchReviews(res.data.data._id);
         // await fetchReviewUsers(res?.data?.data?.reviews);
       }
     } catch (error) {
@@ -57,11 +57,11 @@ function Product() {
     }
   };
 
-  const fetchReviews = async(id) => {
+  const fetchReviews = async (id) => {
     try {
-      const res = await api.get(`/reviews/product/${id}`)
-      if(res.status === 200) {
-        await fetchReviewUsers(res.data.data)
+      const res = await api.get(`/reviews/product/${id}`);
+      if (res.status === 200) {
+        await fetchReviewUsers(res.data.data);
         setReviews(res.data.data);
       }
     } catch (error) {
@@ -71,7 +71,7 @@ function Product() {
       );
       setError("Failed to fetch reviews.");
     }
-  }
+  };
   const fetchReviewUsers = async (reviews) => {
     let users = {};
     try {
@@ -139,10 +139,10 @@ function Product() {
   if (isPending) return <Loading />;
 
   return (
-    <div>
+    <div className="seven-xl">
       {dialogOpen && (
-        <div className="fixed inset-0 h-[calc(100vh-3.8rem)] w-screen bg-dark/25 dark:bg-light/25 flex justify-center items-center z-50">
-          <div className="relative w-11/12 md:w-96 h-96 bg-light dark:bg-dark rounded-2xl p-4 flex flex-col items-center gap-4">
+        <div className="fixed inset-0 h-screen w-screen bg-slate-950/75 fji z-50">
+          <div className="relative xs:w-96 h-96 bg-light dark:bg-dark rounded-2xl fc4">
             <IoCloseCircle
               className="absolute right-1 top-1 cursor-pointer hover:text-red-600"
               size={24}
@@ -193,18 +193,20 @@ function Product() {
       )}
 
       <div>
-        <h2 className="text-2xl font-semibold mt-4 ml-4 tracking-wider">Category | {product?.category} | {product?.title}</h2>
+        <h2 className="text-2xl font-semibold tracking-wider">
+          Category | {product?.category} | {product?.title}
+        </h2>
       </div>
 
-      <div className="p-4 md:p-8 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 overflow-y-hidden">
+      <div className="sm:p-4 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8 overflow-y-hidden">
         {product && (
           <div className="flex flex-col xl:flex-row gap-4 w-full">
             <img
               src={src}
               alt={product.title}
-              className="w-full h-72 rounded-xl object-cover"
+              className="w-full max-w-96 h-96 rounded-xl object-cover"
             />
-            <ul className="grid grid-cols-2 min-[350px]:grid-cols-3 xs:grid-cols-4 sm:grid-cols-6 md:grid-cols-4 xl:grid-cols-3 gap-4 container-3 p-4 w-full justify-items-center">
+            <ul className="h-fit flex flex-wrap gap-4 container-3 p-4 w-full justify-items-center">
               {product.images.map((img) => (
                 <img
                   key={img}
@@ -220,8 +222,8 @@ function Product() {
           </div>
         )}
 
-        <div className="container-3 h-full p-4">
-          <div className="h-full grid xl:grid-rows-1 grid-rows-[auto_auto_1fr] grid-cols-1 xl:grid-cols-[1fr_auto_1fr] gap-4">
+        <div className="container-3 p-4">
+          <div className="flex flex-wrap gap-4">
             <div className="pl-2 pt-2 flex flex-col gap-2">
               <h2 className="head-2 -ml-2">Contact Details:</h2>
               <div className="flex gap-2 items-center">
@@ -259,9 +261,8 @@ function Product() {
                 </div>
               </div>
             </div>
-            <div className="bg-secondary w-full xl:w-px h-px xl:h-full rounded-md hidden md:block"></div>
             <iframe
-              className="h-48 md:h-full w-full bg-lime-400 rounded-lg"
+              className="w-full bg-lime-400 rounded-lg"
               loading="lazy"
               allowFullScreen
               referrerPolicy="no-referrer-when-downgrade"

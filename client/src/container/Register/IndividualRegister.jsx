@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { MdOutlineChangeCircle } from "react-icons/md";
 import { IoPersonCircle } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import api from "../../api";
+import api from "../../utils/api";
 import axios from "axios";
 
 const upload_preset = import.meta.env.VITE_UPLOAD_PRESET;
@@ -14,22 +14,20 @@ function IndividualRegister({ setRoleToggle }) {
   const [image, setImage] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
 
-
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
     phone: "",
     password: "",
     confirmPassword: "",
-    
+
     address: "",
     city: "",
     state: "",
     country: "",
     pincode: "",
-    
   });
-  
+
   const [error, setError] = useState("");
   const [isPending, setIsPending] = useState(false);
   const [isUploading, setIsUploading] = useState(false);

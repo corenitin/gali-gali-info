@@ -1,21 +1,27 @@
 import React, { useState } from "react";
 import { RiExchangeLine } from "react-icons/ri";
-import { DarkModeBtn } from "../components";
+import { DarkModeBtn, Spinner } from "../components";
 import { useNavigate } from "react-router";
-import api from "../api";
+import api from "../utils/api";
 import { useAuth } from "../context/AuthContext";
 
 function Login() {
   const [loginMethod, setLoginMethod] = useState("email"); // Default: Email login
   const [showTooltip, setShowTooltip] = useState(false);
-  const [credentials, setCredentials] = useState({ email: "", phone: "", password: "" });
+  const [credentials, setCredentials] = useState({
+    email: "",
+    phone: "",
+    password: "",
+  });
   const [error, setError] = useState("");
   const [pending, setPending] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, loading } = useAuth();
 
   const toggleLoginMethod = () => {
-    setLoginMethod((prevMethod) => (prevMethod === "email" ? "phone" : "email"));
+    setLoginMethod((prevMethod) =>
+      prevMethod === "email" ? "phone" : "email"
+    );
     setError(""); // Clear errors when switching methods
   };
 
@@ -26,36 +32,21 @@ function Login() {
   const handleLogin = async () => {
     setError("");
     setPending(true);
-
     try {
       const res = await api.post("/users/login", {
         email: credentials.email,
-        phone: credentials.phone, 
+        phone: credentials.phone,
         password: credentials.password,
       });
-      
-      const email = res.data.data.user.email;
-      const phone = res.data.data.user.phone;
-      const role = res.data.data.user.role;
-      const category = res.data.data.user.category;
-
-      let photo = ''
-      let name = '';
-
-      if (role === "individual") {
-        name = res.data.data.user.fullName;
-        photo = res.data.data.user.profileImage;
+      if (res.status === 200) {
+        login(res.data.data.user);
+        res.data.data?.user.role === "business"
+          ? navigate("/business/dashboard")
+          : navigate("/dashboard")
       }
-      if (role === "business") {
-        name = res.data.data.user.organization_name;
-        photo = res.data.data.user.logo;
-      }
-      if(res.status === 200) {
-        login({ email, phone, name, photo, role, category })
-        role === 'business' ? navigate("/business/dashboard") : navigate('/dashboard');
-      } // Redirect on success
     } catch (err) {
-      setError(err.message);
+      setError(err.response.data.message);
+      console.log("Error while logging in: ", err.response.data.message);
     } finally {
       setPending(false);
     }
@@ -66,12 +57,15 @@ function Login() {
       <div className="absolute top-1 lg:top-4 right-4">
         <DarkModeBtn />
       </div>
-      <div className="container flex flex-col max-w-lg gap-8">
+      <div className="container flex flex-col items-center max-w-lg gap-8">
         <div>
           <h1 className="head-1">Login to your account</h1>
           <h2 className="head-2 my-2">
             <span>Don't have an account?</span>
-            <button onClick={() => navigate("/register")} className="text-primary xs:mx-2 cursor-pointer">
+            <button
+              onClick={() => navigate("/register")}
+              className="text-primary xs:mx-2 cursor-pointer"
+            >
               Register
             </button>
           </h2>
@@ -80,13 +74,17 @@ function Login() {
         {error && <p className="text-red-500">{error}</p>}
 
         <div className="relative w-full">
-          <label className="text-sm">{loginMethod.charAt(0).toUpperCase() + loginMethod.slice(1)}</label>
+          <label className="text-sm">
+            {loginMethod.charAt(0).toUpperCase() + loginMethod.slice(1)}
+          </label>
           <input
             type={loginMethod === "email" ? "text" : "number"}
             name={loginMethod}
             value={credentials[loginMethod]}
             onChange={handleChange}
-            placeholder={loginMethod === "email" ? "Enter email" : "Enter phone number"}
+            placeholder={
+              loginMethod === "email" ? "Enter email" : "Enter phone number"
+            }
             className="input w-full pr-12"
           />
 
@@ -111,11 +109,11 @@ function Login() {
           value={credentials.password}
           onChange={handleChange}
           placeholder="Enter password"
-          className="input"
+          className="input w-full"
         />
 
-        <button onClick={handleLogin} className="submit-btn" disabled={pending}>
-          {pending ? "Logging in..." : "Login"}
+        <button onClick={handleLogin} className="btn " disabled={pending}>
+          {pending ? <Spinner loading={pending} /> : "Login"}
         </button>
       </div>
     </div>

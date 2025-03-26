@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import api from "../api.js";
+import api from "../utils/api.js";
 import { Link } from "react-router";
 import Loading from "../components/Loading.jsx";
 import { MdLocationPin } from "react-icons/md";
+import { useAuth } from "../context/AuthContext.jsx";
 
 function SelfPickUp() {
   // const [locationPermissionGranted, setLocationPermissionGranted] =
@@ -39,23 +40,24 @@ function SelfPickUp() {
   //     </div>
   //   );
   // }
-  const [pincode, setPincode] = useState("");
+  // const [pincode, setPincode] = useState("");
   const [shops, setShops] = useState([]);
   const [isPending, setIsPending] = useState(false);
+  const { user } = useAuth();
 
-  const fetchUser = async () => {
-    setIsPending(true);
-    try {
-      const res = await api.get("/users/get");
-      setPincode(res.data.data.pincode);
-    } catch (error) {
-      console.log("Error while fetching user: ", error.response.data.message);
-    }
-  };
+  // const fetchUser = async () => {
+  //   try {
+  //     const res = await api.get("/users/get");
+  //     setPincode(res.data.data.pincode);
+  //   } catch (error) {
+  //     console.log("Error while fetching user: ", error.response.data.message);
+  //   }
+  // };
 
   const fetchShopsByPincode = async () => {
+    setIsPending(true);
     try {
-      const res = await api.get(`/business/products/pin/${pincode}`);
+      const res = await api.get(`/business/products/pin/${user?.pincode}`);
       setShops(res.data.data);
       console.log(res.data.data);
     } catch (error) {
@@ -68,15 +70,15 @@ function SelfPickUp() {
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
+  // useEffect(() => {
+  //   fetchUser();
+  // }, []);
 
   useEffect(() => {
-    if (pincode) {
+    if (user?.pincode) {
       fetchShopsByPincode();
     }
-  }, [pincode]);
+  }, [user?.pincode]);
 
   console.log(shops);
 
@@ -85,7 +87,7 @@ function SelfPickUp() {
   return (
     <div className="p-4">
       <h1 className="head-2">
-        All the shops that are available for pincode - {pincode}
+        All the shops that are available for pincode - {user?.pincode}
       </h1>
 
       <section className="w-full flex justify-center mt-4">

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
-import api from "../api";
+import api from "../utils/api";
 import { Loading } from "../components";
 import { FaStar } from "react-icons/fa6";
 
@@ -82,45 +82,41 @@ function Category() {
   }, []);
 
   return (
-    <div className="p-4">
+    <div className="seven-xl">
       <h2 className="head-2">
         Category | {name.charAt(0).toUpperCase() + name.slice(1)}
       </h2>
       {isPending && <Loading />}
-      <ul className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-2 xs:gap-4 p-2 xs:p-4 justify-items-center">
+      <ul className="flex flex-wrap justify-center md:justify-start gap-4 p-4">
         {products.map((product) => (
           <Link
             key={product._id}
             to={`/dashboard/category/${product.category}/${product._id}`}
-            className="w-fit flex flex-col gap-2 xs:gap-4 p-2 xs:p-4 bg-light dark:bg-dark rounded-2xl cursor-pointer border border-primary/20 shadow-xl shadow-blue-shadow/5 hover:shadow-blue-shadow/15"
+            className="w-full max-w-56 fc4 blue-b-s"
           >
             <img
               src={product.images[0]}
               alt={product.title}
-              className="w-full max-w-56 h-40 rounded-2xl object-cover"
+              className="w-52 h-40 rounded-2xl object-cover"
             />
-            <div className="flex justify-between items-center gap-2">
+            <div className="flex justify-between gap-2">
               <div>
                 <h3 className="head-3">{product.title}</h3>
-                <span className="text-sm">
+                <span className="text-sm w-8">
                   {organizations[product.user]?.organization_name ||
                     "Loading..."}
                 </span>
               </div>
-              <div className="flex flex-col items-center justify-center border border-secondary rounded-2xl px-2 xs:px-4 py-1 xs:py-2">
+              <div className="yb h-fit px-2 py-1">
                 <FaStar className="text-secondary" />
                 <span>{product.overallRating.toFixed(1)}</span>
               </div>
             </div>
-            <div className="h-px w-full bg-dark/10 dark:bg-light/10"></div>
-            <div className="flex-1 flex flex-col gap-1 text-sm">
-              <div className="opacity-50">
-                <span>
-                  {organizations[product.user]?.city || "-"},
-                </span>
-                <span>
-                  {organizations[product.user]?.state || "-"}
-                </span>
+            <hr className="border-slate-300" />
+            <div className="fc1 text-sm">
+              <div className="text-slate-500">
+                <span>{organizations[product.user]?.city || "-"},</span>
+                <span>{organizations[product.user]?.state || "-"}</span>
               </div>
               <span className="self-end text-blue-900">
                 {getTimePassed(product.createdAt)}
