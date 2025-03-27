@@ -1,4 +1,5 @@
 import React from "react";
+import UnderMaintenance from "../../components/Under";
 
 function BusinessDashboard() {
   const requests = [
@@ -7,8 +8,8 @@ function BusinessDashboard() {
     { title: "Pending", value: "02" },
   ];
   return (
-    <div className="lg:mt-8 lg:ml-8">
-      <div className="grid xs:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-16">
+    <div className="">
+      {/* <div className="grid xs:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 lg:gap-16">
         <div className="container-2 bg-green-400/20 border-green-600">
           <h2 className="head-2">Total Views:</h2>
           <span className="text-5xl font-semibold  ">1200</span>
@@ -27,7 +28,9 @@ function BusinessDashboard() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
+
+      <UnderMaintenance />
     </div>
   );
 }

@@ -1,8 +1,11 @@
 import React from 'react'
+import UnderMaintenance from '../../components/Under'
 
 function PickUpRequests() {
   return (
-    <div>PickUpRequests</div>
+    <div>
+      <UnderMaintenance />
+    </div>
   )
 }
 

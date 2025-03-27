@@ -5,7 +5,7 @@ import { useAuth } from "./context/AuthContext";
 function App() {
   const { user } = useAuth();
   return (
-    <div className="min-h-screen text-dark dark:text-light">
+    <div className="min-h-screen text-dark dark:text-light back">
       <div className="flex justify-center">
         <Navbar />
       </div>

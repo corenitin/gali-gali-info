@@ -74,7 +74,7 @@ function Navbar() {
 
         {/* Website Name & Logo */}
         <Link
-          to={"/"}
+          to={user?.role === 'business' ? "/business/dashboard" : "/"}
           className="flex-1 flex items-center justify-center lg:justify-start gap-2"
         >
           <img

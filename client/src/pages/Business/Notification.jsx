@@ -1,8 +1,11 @@
 import React from 'react'
+import UnderMaintenance from '../../components/Under'
 
 function Notification() {
   return (
-    <div>Notification</div>
+    <div>
+      <UnderMaintenance />
+    </div>
   )
 }
 
